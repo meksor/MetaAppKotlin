@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Metapp</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="title_screeninvader">Screeninvader</string>
+    <string name="title_control">Control</string>
+    <string name="title_issues">Issues</string>
+    <string name="title_settings">Settings</string>
+
+    <string name="title_subheader_social">Social Things</string>
+
+    <string name="title_github">Github</string>
+    <string name="title_share">Share</string>
+
+
+
+</resources>

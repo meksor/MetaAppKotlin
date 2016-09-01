@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>>
+
+    <color name="meta_dunkelblau">#1C3654</color>
+    <color name="meta_duenkelerblau">#182E46</color>
+    <color name="meta_kontrast"> #334B6A</color>
+    <color name="meta_orange">#CC6427</color>
+
+</resources>

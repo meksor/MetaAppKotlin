@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_screeninvader"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/title_screeninvader"/>
+        <item
+            android:id="@+id/nav_control"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/title_control"/>
+        <item
+            android:id="@+id/nav_issues"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/title_issues"/>
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/title_settings"/>
+    </group>
+
+    <item android:title="@string/title_subheader_social">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/title_share"/>
+            <item
+                android:id="@+id/nav_github"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/title_github"/>
+        </menu>
+    </item>
+
+</menu>
