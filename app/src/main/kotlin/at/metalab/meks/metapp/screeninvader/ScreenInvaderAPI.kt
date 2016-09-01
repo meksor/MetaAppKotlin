@@ -1,6 +1,8 @@
 package at.metalab.meks.metapp.screeninvader
 
+import android.content.Context
 import android.os.Looper
+import android.support.v4.content.ContextCompat
 import android.util.Log
 
 import org.java_websocket.client.WebSocketClient
@@ -15,7 +17,7 @@ import java.net.URISyntaxException
  * Created by meks on 21.07.2016.
  */
 
-class ScreenInvaderAPI() {
+class ScreenInvaderAPI(val context : Context) {
 
     object COMMANDS {
 
@@ -45,38 +47,11 @@ class ScreenInvaderAPI() {
 
     private var mWebSocketClient: WebSocketClient? = null
 
-    private val currentItemUrl: String? = null
-    var playerPaused: Boolean = false
-    var shairportActive: Boolean = false
-    var playlistIsReady: Boolean = false
+    private var currentItemUrl: String? = null
 
     private var playerObject: JSONObject? = null
     private var soundObject: JSONObject? = null
     lateinit var playlistArray: JSONArray
-
-    fun sendSICommand(command: String, param: String) {
-        val fullcommand = "[\"publish\", \"$command\",\"W\",\" $param\"]"
-        try {
-            if (mWebSocketClient!!.getConnection() != null) {
-                mWebSocketClient!!.send(fullcommand)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-    }
-
-    fun sendSICommand(command: String) {
-        val fullcommand = "[\"publish\", \"$command\",\"W\" ]"
-        try {
-            if (mWebSocketClient!!.getConnection() != null) {
-                mWebSocketClient!!.send(fullcommand)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-    }
 
     //WebSockets! foar Screeninvader
     fun connectWebSocket() {
@@ -111,40 +86,64 @@ class ScreenInvaderAPI() {
         mWebSocketClient!!.readyState
     }
 
+    fun sendSICommand(command: String, param: String) {
+        val fullcommand = "[\"publish\", \"$command\",\"W\",\" $param\"]"
+        try {
+            if (mWebSocketClient!!.getConnection() != null) {
+                mWebSocketClient!!.send(fullcommand)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+    fun sendSICommand(command: String) {
+        val fullcommand = "[\"publish\", \"$command\",\"W\" ]"
+
+        try {
+            if (mWebSocketClient!!.getConnection() != null) {
+                mWebSocketClient!!.send(fullcommand)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
     private fun parseMessage(s: String) {
-        val syncObj: JSONObject
         val event: JSONArray
 
         if (s.startsWith("{")) {
             val result = s.replace("\n".toRegex(), "")
-            try {
-                syncObj = JSONObject(result)
-                fullSync(syncObj)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
+                getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.FULL_SYNC, result)
         } else {
             try {
                 event = JSONArray(s)
-                when (event.getString(0)) {
-                    "notifySend" -> {} //TODO; notify the user
-                    "playerTimePos" -> {}
+                val eventType = event.getString(0)
+                val eventParam = event.getString(2)
+                when (eventType) {
+                    "notifySend" -> {
+                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_SEND, eventParam)
+                    }
+                    "playerTimePos" -> {
+                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYER_TIME_POS, eventParam)
+                    }
                     "/player/paused" -> {
-                        playerPaused = event.getString(2) == "true"
+                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYER_PAUSE_STATUS, eventParam)
                     }
                     "/shairport/active" -> {
-                        shairportActive = event.getString(2) == "true"
+                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.SHAIRPORT_ACTIVE_STATUS, eventParam)
                     }
-                    else -> return
+                    else -> getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.SHAIRPORT_ACTIVE_STATUS, "Unknown Event Type: " + eventType)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         }
     }
 
+    /*
     private fun fullSync(syncObj: JSONObject) {
         try {
             shairportActive = syncObj.getJSONObject("shairport").getString("active") == "true"
@@ -157,5 +156,22 @@ class ScreenInvaderAPI() {
             e.printStackTrace()
         }
 
+    }
+    */
+
+    enum class Message {
+        FULL_SYNC,
+        NOTIFY_SEND,
+        PLAYER_TIME_POS,
+        PLAYER_PAUSE_STATUS,
+        SHAIRPORT_ACTIVE_STATUS
+    }
+
+    interface OnScreenInvaderMessageListener {
+        fun onScreenInvaderMessage(message : Message, param: String)
+    }
+
+    fun getOnScreenInvaderMessageListener() : OnScreenInvaderMessageListener {
+        return context as ScreenInvaderActivtiy
     }
 }

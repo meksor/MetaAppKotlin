@@ -18,7 +18,7 @@ import org.jetbrains.anko.intentFor
 
 open class BaseDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    lateinit var mRootLayout : RelativeLayout
+    lateinit var mRootLayout : FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ open class BaseDrawerActivity : AppCompatActivity(), NavigationView.OnNavigation
         val navigationView = findViewById(R.id.activity_base_drawer_view) as NavigationView
         navigationView.setNavigationItemSelectedListener(this)
 
-        mRootLayout = findViewById(R.id.activity_base_root) as RelativeLayout
+        mRootLayout = findViewById(R.id.activity_base_root) as FrameLayout
     }
 
     override fun onBackPressed() {

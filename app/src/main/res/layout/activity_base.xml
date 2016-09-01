@@ -32,10 +32,11 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/activity_base_root"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+        </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
@@ -46,5 +47,4 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/header_nav_activity_base"
         app:menu="@menu/menu_activity_base_drawer"/>
-
 </android.support.v4.widget.DrawerLayout>

@@ -1,52 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/meta_dunkelblau">
+        android:background="@android:color/background_light"
+        android:layout_gravity="bottom"
+        android:elevation="4dp">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <com.dmitrymalkovich.android.ProgressFloatingActionButton
+            android:id="@+id/playerbar_button_play_progress_layout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center">
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_centerInParent="true"
+            android:clickable="true">
 
-            <ToggleButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="16dp"
-                android:layout_marginLeft="16dp"
-                android:paddingTop="8dp"
-                android:drawableTop="@drawable/button_play"
-                android:background="@drawable/background_circle_white"
-                android:id="@+id/activity_content_screeninvader_playerbar_button_play"
-                android:textOff=""
-                android:textOn=""
-                android:textSize="0dp"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/playerbar_button_play"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:theme="@style/CustomFloatingActionButtonTheme"/>
 
-            <ImageButton
+            <ProgressBar
+                style="@style/Widget.AppCompat.ProgressBar"
+
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_skip_previous_white_24dp"
-                android:background="@android:color/transparent"
-                android:layout_toLeftOf="@id/activity_content_screeninvader_playerbar_button_play"/>
+                android:layout_height="wrap_content" />
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/ic_skip_next_white_24dp"
-                android:background="@android:color/transparent"
-                android:layout_toRightOf="@id/activity_content_screeninvader_playerbar_button_play"/>
-
-        </RelativeLayout>
+        </com.dmitrymalkovich.android.ProgressFloatingActionButton>
 
 
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/playerbar_button_previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_previous_playerbar"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_toLeftOf="@id/playerbar_button_play_progress_layout"/>
 
-</merge>
+        <ImageButton
+            android:id="@+id/playerbar_button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_next_playerbar"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_toRightOf="@id/playerbar_button_play_progress_layout"/>
+
+    </RelativeLayout>
+</LinearLayout>

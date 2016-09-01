@@ -15,7 +15,7 @@
     </style>
 
     <style name="CustomFloatingActionButtonTheme" parent="Widget.Design.FloatingActionButton">
-        <item name="colorAccent">@android:color/white</item>
+        <item name="colorAccent">@color/meta_dunkelblau</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
