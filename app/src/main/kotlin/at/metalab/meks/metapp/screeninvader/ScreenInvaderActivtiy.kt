@@ -40,6 +40,7 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(), View.OnClickListener, Screen
                             ScreenInvaderAPI.COMMANDS.PLAYER_PAUSE
                         else
                             ScreenInvaderAPI.COMMANDS.PLAYER_PLAY)
+
             }
             R.id.playerbar_button_previous -> {
                 mScreenInvaderAPI.sendSICommand(ScreenInvaderAPI.COMMANDS.PLAYER_PREVIOUS)
