@@ -57,7 +57,6 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(), View.OnClickListener, Screen
             ScreenInvaderAPI.Message.PLAYER_TIME_POS -> {}
             ScreenInvaderAPI.Message.PLAYER_PAUSE_STATUS -> {
                 mPlayer.paused = (param == "true")
-
             }
             ScreenInvaderAPI.Message.SHAIRPORT_ACTIVE_STATUS -> {
                 mPlayer.shairportActive = (param == "true")
