@@ -168,7 +168,7 @@ class ScreenInvaderAPI(val context : Context) {
     }
 
     interface OnScreenInvaderMessageListener {
-        fun onScreenInvaderMessage(message : Message, param: String)
+        fun onScreenInvaderMessage(message : Message, data: String)
     }
 
     fun getOnScreenInvaderMessageListener() : OnScreenInvaderMessageListener {

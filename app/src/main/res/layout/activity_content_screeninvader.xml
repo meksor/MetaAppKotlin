@@ -1,40 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@android:color/background_light">
 
+    <ProgressBar
+        android:id="@+id/playerbar_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="visible"
+        android:layout_above="@id/playerbar"
+        style="?android:attr/progressBarStyleHorizontal"/>
+
     <RelativeLayout
+        android:id="@+id/playerbar"
+        android:layout_alignParentBottom="true"
+        android:elevation="4dp"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@android:color/background_light"
-        android:layout_gravity="bottom"
-        android:elevation="4dp">
-
-        <com.dmitrymalkovich.android.ProgressFloatingActionButton
-            android:id="@+id/playerbar_button_play_progress_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_centerInParent="true"
-            android:clickable="true">
+        android:background="@android:color/background_light">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/playerbar_button_play"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_centerInParent="true"
             android:background="?attr/selectableItemBackground"
             android:theme="@style/CustomFloatingActionButtonTheme"/>
-
-            <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </com.dmitrymalkovich.android.ProgressFloatingActionButton>
 
 
         <ImageButton
@@ -44,7 +41,7 @@
             android:layout_centerInParent="true"
             android:src="@drawable/ic_previous_playerbar"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_toLeftOf="@id/playerbar_button_play_progress_layout"/>
+            android:layout_toLeftOf="@id/playerbar_button_play"/>
 
         <ImageButton
             android:id="@+id/playerbar_button_next"
@@ -53,7 +50,8 @@
             android:layout_centerInParent="true"
             android:src="@drawable/ic_next_playerbar"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_toRightOf="@id/playerbar_button_play_progress_layout"/>
+            android:layout_toRightOf="@id/playerbar_button_play"/>
 
     </RelativeLayout>
-</LinearLayout>
+
+</RelativeLayout>
