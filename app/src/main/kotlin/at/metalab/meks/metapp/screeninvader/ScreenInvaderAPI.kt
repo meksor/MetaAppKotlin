@@ -68,6 +68,7 @@ class ScreenInvaderAPI(val context : Context) {
             override fun onOpen(serverHandshake: ServerHandshake) {
                 Log.i("Websocket", "Opened")
                 Looper.prepare()
+                getOnScreenInvaderMessageListener().onWebsocketOpened()
                 mWebSocketClient!!.send("setup")
             }
 
@@ -81,6 +82,7 @@ class ScreenInvaderAPI(val context : Context) {
 
             override fun onError(e: Exception) {
                 Log.i("Websocket", "Error " + e.message)
+                getOnScreenInvaderMessageListener().onWebsocketError(e)
             }
         }
         mWebSocketClient!!.connect()
@@ -174,6 +176,8 @@ class ScreenInvaderAPI(val context : Context) {
 
     interface OnScreenInvaderMessageListener {
         fun onScreenInvaderMessage(message : Message, data: String)
+        fun onWebsocketError(exception: Exception)
+        fun onWebsocketOpened()
     }
 
     fun getOnScreenInvaderMessageListener() : OnScreenInvaderMessageListener {

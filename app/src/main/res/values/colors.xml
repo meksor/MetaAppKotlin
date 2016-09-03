@@ -8,6 +8,9 @@
 
     <color name="md_disabled">#61000000</color>
 
+    <color name="md_red_800">#C62828</color>
+    <color name="md_red_a700">#D50000</color>
+
     <color name="md_grey_50">#FAFAFA</color>
     <color name="md_grey_100">#F5F5F5</color>
 

@@ -1,39 +1,49 @@
 package at.metalab.meks.metapp.screeninvader
 
+import android.app.FragmentTransaction
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.AnimationUtils
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.SeekBar
 import at.metalab.meks.metapp.BaseDrawerActivity
 import at.metalab.meks.metapp.R
 import at.metalab.meks.metapp.convertDpToPixel
-import at.metalab.meks.metapp.pxFromDp
 import at.metalab.meks.metapp.screeninvader.pojo.ScreeninvaderObject
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.header_nav_activity_base.view.*
-import org.jetbrains.anko.image
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
  * Created by meks on 01.09.2016.
  */
-class ScreenInvaderActivtiy : BaseDrawerActivity(), View.OnClickListener, ScreenInvaderAPI.OnScreenInvaderMessageListener {
+class ScreenInvaderActivtiy : BaseDrawerActivity(),
+        View.OnClickListener,
+        ScreenInvaderAPI.OnScreenInvaderMessageListener {
 
     val mScreenInvaderAPI : ScreenInvaderAPI = ScreenInvaderAPI(this)
     lateinit var mScreenInvaderObject: ScreeninvaderObject
-    var lastVolume = "20"
+    var mLastVolume = "20"
 
     lateinit var mProgressBar : ProgressBar
     lateinit var mVolumeBar: SeekBar
-    lateinit var mPlayButton : ImageButton
-    lateinit var mMuteButton : ImageButton
-    lateinit var mMoreButton : ImageButton
     lateinit var mPlayerBarMoreLayout: LinearLayout
+
+    lateinit var mCurrentPlayerbarFragment : PlayerBarBaseFragment
+
+    object Buttons {
+        lateinit var mPlayButton : ImageButton
+        lateinit var mMoreButton : ImageButton
+        lateinit var mPreviousButton : ImageButton
+        lateinit var mNextButton : ImageButton
+        lateinit var mShuffleButton : ImageButton
+
+        lateinit var mMuteButton : ImageButton
+    }
 
     var mMoreExpanded : Boolean = false
 
@@ -44,41 +54,44 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(), View.OnClickListener, Screen
         val activityView = inflater.inflate(R.layout.activity_content_screeninvader, mRootLayout, false)
         mRootLayout.addView(activityView)
 
-        mProgressBar = findViewById(R.id.playerbar_progressbar) as ProgressBar
-        mPlayButton = findViewById(R.id.playerbar_button_play) as ImageButton
-        mMoreButton = findViewById(R.id.playerbar_button_more) as ImageButton
-        mMuteButton = findViewById(R.id.playerbar_button_mute) as ImageButton
         mPlayerBarMoreLayout = findViewById(R.id.playerbar_more_layout) as LinearLayout
+        mProgressBar = findViewById(R.id.playerbar_progressbar) as ProgressBar
 
-        mPlayButton.setOnClickListener(this)
-        findViewById(R.id.playerbar_button_previous).setOnClickListener(this)
-        findViewById(R.id.playerbar_button_next).setOnClickListener(this)
-        findViewById(R.id.playerbar_button_shuffle).setOnClickListener(this)
-        mMoreButton.setOnClickListener(this)
-        mMuteButton.setOnClickListener(this)
+        Buttons.mPlayButton = findViewById(R.id.playerbar_button_play) as ImageButton
+        Buttons.mMoreButton = findViewById(R.id.playerbar_button_more) as ImageButton
+        Buttons.mMuteButton = findViewById(R.id.playerbar_button_mute) as ImageButton
+        Buttons.mPreviousButton = findViewById(R.id.playerbar_button_previous) as ImageButton
+        Buttons.mNextButton = findViewById(R.id.playerbar_button_next) as ImageButton
+        Buttons.mShuffleButton = findViewById(R.id.playerbar_button_shuffle) as ImageButton
+
+        Buttons.mMoreButton.setOnClickListener(this)
+        Buttons.mMuteButton.setOnClickListener(this)
+        Buttons.mPlayButton.setOnClickListener(this)
+        Buttons.mPreviousButton.setOnClickListener(this)
+        Buttons.mNextButton.setOnClickListener(this)
+        Buttons.mShuffleButton.setOnClickListener(this)
+
         mVolumeBar = findViewById(R.id.playerbar_volume_seekbar) as SeekBar
         mVolumeBar.setOnSeekBarChangeListener( object : SeekBar.OnSeekBarChangeListener{
             override fun onStopTrackingTouch(seekBar : SeekBar) {
-                // TODO Auto-generated method stub
             }
 
             override fun onStartTrackingTouch(seekBar : SeekBar) {
-                // TODO Auto-generated method stub
             }
 
             override fun onProgressChanged(seekBar : SeekBar, progress : Int, fromUser : Boolean) {
-                updateUiComponent(UiComponent.BUTTON_MUTE)
+                updateUiComponent(View.BUTTON_MUTE)
                 if (fromUser) {
                     mScreenInvaderAPI.sendSICommandTrigger(ScreenInvaderAPI.COMMANDS.VOLUME_SET, progress.toString())
                 }
             }
         })
-
-
         mScreenInvaderAPI.connectWebSocket()
+        showFragment(PlayerBarBaseFragment.FragmentType.BUTTONS)
     }
 
-    override fun onClick(p0: View?) {
+    override fun onClick(p0: android.view.View?) {
+
         when (p0!!.id){
             R.id.playerbar_button_play -> {
                 mScreenInvaderAPI.sendSICommandPublish(
@@ -100,15 +113,34 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(), View.OnClickListener, Screen
                 }
             }
             R.id.playerbar_button_more  -> {
-                updateUiComponent(UiComponent.BUTTON_MORE)
+                updateUiComponent(View.BUTTON_MORE)
             }
             R.id.playerbar_button_mute -> {
                 if (mScreenInvaderObject.sound.volume.replace(" ","").toInt() > 0){
-                    lastVolume = mScreenInvaderObject.sound.volume.replace(" ","")
+                    mLastVolume = mScreenInvaderObject.sound.volume.replace(" ","")
                     mScreenInvaderAPI.sendSICommandTrigger(ScreenInvaderAPI.COMMANDS.VOLUME_SET, "0")
                 } else {
-                    mScreenInvaderAPI.sendSICommandTrigger(ScreenInvaderAPI.COMMANDS.VOLUME_SET, lastVolume)
+                    mScreenInvaderAPI.sendSICommandTrigger(ScreenInvaderAPI.COMMANDS.VOLUME_SET, mLastVolume)
                 }
+            }
+            R.id.playerbar_button_airplay -> {
+                mScreenInvaderAPI.sendSICommandPublish(
+                        if (mScreenInvaderObject.shairport.active != "true")
+                            ScreenInvaderAPI.COMMANDS.SHAIRPORT_STOP
+                        else
+                            ScreenInvaderAPI.COMMANDS.SHAIRPORT_START)
+            }
+            R.id.playerbar_button_replay -> {
+                mScreenInvaderAPI.sendSICommandPublish(ScreenInvaderAPI.COMMANDS.PLAYER_JUMP, "0")
+            }
+            R.id.playerbar_button_clear_playlist -> {
+                showFragment(PlayerBarBaseFragment.FragmentType.CLEAR)
+            }
+            R.id.playerbar_button_confirm_clear_playlist -> {
+                //TODO: Clear Playlist
+            }
+            R.id.playerbar_button_cancel_clear_playlist -> {
+                showFragment(PlayerBarBaseFragment.FragmentType.BUTTONS)
             }
         }
     }
@@ -120,11 +152,10 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(), View.OnClickListener, Screen
             ScreenInvaderAPI.Message.NOTIFY_SEND -> {
 
             }
-
             ScreenInvaderAPI.Message.PLAYER_TIME_POS -> {
                 val playerTimePos = parseSimpleGson<ArrayList <String>>(data)
+                val sdf = SimpleDateFormat("hh:mm:ss")
 
-                    val sdf = SimpleDateFormat("hh:mm:ss")
                 if(playerTimePos[0] != "V:" && playerTimePos[0] != "lib") {
                     val currentTime = sdf.parse(playerTimePos[0].replace("\\", ""))
                     val totalTime = sdf.parse(playerTimePos[1].replace("\\", ""))
@@ -136,10 +167,11 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(), View.OnClickListener, Screen
             }
             ScreenInvaderAPI.Message.PLAYER_PAUSE_STATUS -> {
                 mScreenInvaderObject.player.paused = data
-                updateUiComponent(UiComponent.BUTTON_PLAY)
+                updateUiComponent(View.BUTTON_PLAY)
             }
             ScreenInvaderAPI.Message.SHAIRPORT_ACTIVE_STATUS -> {
                 mScreenInvaderObject.shairport.active = data
+                getFragmentViewUpdateListener().onFragmentViewUpdated(View.BUTTON_SHAIRPLAY, data.replace(" ","") == "true")
             }
             ScreenInvaderAPI.Message.VOLUME_CHANGED -> {
                 mScreenInvaderObject.sound.volume = data.replace(" ","")
@@ -148,56 +180,65 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(), View.OnClickListener, Screen
         }
     }
 
-    fun onFullSync(data: String){
+    private fun onFullSync(data: String){
         val type = object : TypeToken<ScreeninvaderObject>() {}.type
         mScreenInvaderObject = Gson().fromJson<ScreeninvaderObject>(data, type)
 
-        updateUiComponent(UiComponent.BUTTON_PLAY)
-        updateUiComponent(UiComponent.BUTTON_MUTE)
-        updateUiComponent(UiComponent.VOLUME_BAR)
+        updateUiComponent(View.BUTTON_PLAY)
+        updateUiComponent(View.BUTTON_MUTE)
+        updateUiComponent(View.VOLUME_BAR)
     }
 
-    enum class UiComponent {
+    enum class View {
         BUTTON_PLAY,
         BUTTON_MORE,
         BUTTON_MUTE,
         VOLUME_BAR,
+        BUTTON_SHAIRPLAY,
+        BUTTON_TORRENTS,
     }
 
-    fun updateUiComponent(component : UiComponent){
+    private fun updateUiComponent(component : View){
         when(component){
-            UiComponent.BUTTON_PLAY -> {
+            View.BUTTON_PLAY -> {
                 this@ScreenInvaderActivtiy.runOnUiThread( {
                     if (mScreenInvaderObject.player.paused == "true"){
-                        mPlayButton.setImageDrawable(getDrawable(R.drawable.ic_play_playerbar))
+                        Buttons.mPlayButton.setImageDrawable(getDrawable(R.drawable.ic_play_playerbar))
                     } else {
-                        mPlayButton.setImageDrawable(getDrawable(R.drawable.ic_pause_playerbar))
+                        Buttons.mPlayButton.setImageDrawable(getDrawable(R.drawable.ic_pause_playerbar))
                     }
                 })
             }
-            UiComponent.BUTTON_MORE -> {
+            View.BUTTON_MORE -> {
                 toggleSlidePlayerbarLayout()
             }
-            UiComponent.BUTTON_MUTE -> {
+            View.BUTTON_MUTE -> {
                 if (mScreenInvaderObject.sound.volume.replace(" ","").toInt() > 0){
-                    mMuteButton.setImageDrawable(getDrawable(R.drawable.ic_volume_playerbar))
+                    Buttons.mMuteButton.setImageDrawable(getDrawable(R.drawable.ic_volume_playerbar))
                 } else {
-                    mMuteButton.setImageDrawable(getDrawable(R.drawable.ic_mute_playerbar))
+                    Buttons.mMuteButton.setImageDrawable(getDrawable(R.drawable.ic_mute_playerbar))
                 }
             }
-            UiComponent.VOLUME_BAR -> {
+            View.VOLUME_BAR -> {
                 mVolumeBar.progress = mScreenInvaderObject.sound.volume.toInt()
             }
         }
     }
 
-    fun toggleSlidePlayerbarLayout() {
+    override fun onWebsocketOpened() {
+    }
+
+    override fun onWebsocketError(exception: Exception) {
+    }
+
+
+    private fun toggleSlidePlayerbarLayout() {
         if (!mMoreExpanded){
             mPlayerBarMoreLayout.animate()
                     .translationYBy(convertDpToPixel(144f))
                     .translationY(0f)
                     .setDuration(resources.getInteger(android.R.integer.config_shortAnimTime).toLong()).start()
-            mMoreButton.animate().rotationBy(180f).start()
+            Buttons.mMoreButton.animate().rotationBy(180f).start()
             mMoreExpanded = true
 
         } else {
@@ -205,12 +246,23 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(), View.OnClickListener, Screen
                     .translationYBy(0f)
                     .translationY(convertDpToPixel(144f))
                     .setDuration(resources.getInteger(android.R.integer.config_shortAnimTime).toLong()).start()
-            mMoreButton.animate().rotationBy(180f).start()
+            Buttons.mMoreButton.animate().rotationBy(180f).start()
             mMoreExpanded = false
         }
     }
 
-    fun getPercentageLeft(current: Date, end: Date): Int {
+    private fun showFragment(type : PlayerBarBaseFragment.FragmentType){
+        when (type){
+            PlayerBarBaseFragment.FragmentType.BUTTONS -> mCurrentPlayerbarFragment = PlayerBarButtonsFragment()
+            PlayerBarBaseFragment.FragmentType.CLEAR -> mCurrentPlayerbarFragment = PlayerBarClearPlaylistFragment()
+            PlayerBarBaseFragment.FragmentType.BROWSER -> TODO()
+        }
+        val transaction : FragmentTransaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.playerbar_fragment_container, mCurrentPlayerbarFragment)
+        transaction.commitAllowingStateLoss()
+    }
+
+    private fun getPercentageLeft(current: Date, end: Date): Int {
         val sdf = SimpleDateFormat("hh:mm:ss")
         val now = current.time
         val s =  sdf.parse("00:00:00").time
@@ -224,9 +276,16 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(), View.OnClickListener, Screen
         return ((e - now) * 100 / (e - s)).toInt()
     }
 
-    fun <T>parseSimpleGson(data : String) : T{
+    private fun <T>parseSimpleGson(data : String) : T{
         val type = object : TypeToken<T>() {}.type
         return Gson().fromJson<T>(data, type)
     }
 
+    interface FragmentViewUpdateListener {
+        fun onFragmentViewUpdated(type : View, enabled: Boolean)
+    }
+
+    fun getFragmentViewUpdateListener() : FragmentViewUpdateListener {
+        return mCurrentPlayerbarFragment
+    }
 }
