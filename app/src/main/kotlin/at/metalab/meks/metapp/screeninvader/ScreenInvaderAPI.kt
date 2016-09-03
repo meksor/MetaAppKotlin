@@ -2,7 +2,6 @@ package at.metalab.meks.metapp.screeninvader
 
 import android.content.Context
 import android.os.Looper
-import android.support.v4.content.ContextCompat
 import android.util.Log
 
 import org.java_websocket.client.WebSocketClient
@@ -32,6 +31,8 @@ class ScreenInvaderAPI(val context : Context) {
         const val PLAYER_NEXT : String = "playerNext"
 
         const val PLAYER_PREVIOUS : String = "playerPrevious"
+
+        const val PLAYER_JUMP : String = "playerJump"
 
         const val SHAIRPORT_START: String = "shairportStart"
 
@@ -86,11 +87,12 @@ class ScreenInvaderAPI(val context : Context) {
         mWebSocketClient!!.readyState
     }
 
-    fun sendSICommand(command: String, param: String) {
-        val fullcommand = "[\"publish\", \"$command\",\"W\",\" $param\"]"
+    fun sendSICommandPublish(command: String, param: String) {
+        val fullcommand = "[\"publish\", \"$command\",\"W\",\"$param\"]"
         try {
             if (mWebSocketClient!!.getConnection() != null) {
                 mWebSocketClient!!.send(fullcommand)
+                Log.d("Sent:",fullcommand)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -98,18 +100,33 @@ class ScreenInvaderAPI(val context : Context) {
 
     }
 
-    fun sendSICommand(command: String) {
+    fun sendSICommandPublish(command: String) {
         val fullcommand = "[\"publish\", \"$command\",\"W\" ]"
 
         try {
             if (mWebSocketClient!!.getConnection() != null) {
                 mWebSocketClient!!.send(fullcommand)
+                Log.d("Sent:",fullcommand)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
     }
+
+    fun sendSICommandTrigger(command: String, param: String) {
+        val fullcommand = "[\"trigger\", \"$command\",\"$param\"]"
+        try {
+            if (mWebSocketClient!!.getConnection() != null) {
+                mWebSocketClient!!.send(fullcommand)
+                Log.d("Sent:", fullcommand)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
 
     private fun parseMessage(s: String) {
         val event: JSONArray
@@ -135,6 +152,9 @@ class ScreenInvaderAPI(val context : Context) {
                     "/shairport/active" -> {
                         getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.SHAIRPORT_ACTIVE_STATUS, eventParam)
                     }
+                    "/sound/volume" -> {
+                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.VOLUME_CHANGED, eventParam)
+                    }
                     else -> getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.SHAIRPORT_ACTIVE_STATUS, "Unknown Event Type: " + eventType)
                 }
             } catch (e: Exception) {
@@ -143,28 +163,13 @@ class ScreenInvaderAPI(val context : Context) {
         }
     }
 
-    /*
-    private fun fullSync(syncObj: JSONObject) {
-        try {
-            shairportActive = syncObj.getJSONObject("shairport").getString("active") == "true"
-            playlistArray = syncObj.getJSONObject("playlist").getJSONArray("items")
-            playerObject = syncObj.getJSONObject("player")
-            soundObject = syncObj.getJSONObject("sound")
-            playlistIsReady = true
-            //updatePlaylist(itemArray);
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-    }
-    */
-
     enum class Message {
         FULL_SYNC,
         NOTIFY_SEND,
         PLAYER_TIME_POS,
         PLAYER_PAUSE_STATUS,
-        SHAIRPORT_ACTIVE_STATUS
+        SHAIRPORT_ACTIVE_STATUS,
+        VOLUME_CHANGED
     }
 
     interface OnScreenInvaderMessageListener {

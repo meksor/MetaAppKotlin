@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 24
@@ -42,7 +43,7 @@ dependencies {
     compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
     compile 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.3'
-
+    compile 'me.zhanghai.android.materialprogressbar:library:1.1.7'
 }
 repositories {
     mavenCentral()

@@ -3,55 +3,190 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@android:color/background_light">
+    android:background="@color/md_grey_50">
 
-    <ProgressBar
-        android:id="@+id/playerbar_progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="visible"
-        android:layout_above="@id/playerbar"
-        style="?android:attr/progressBarStyleHorizontal"/>
-
-    <RelativeLayout
-        android:id="@+id/playerbar"
+    <LinearLayout
+        android:id="@+id/playerbar_more_layout"
+        android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:elevation="4dp"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@android:color/background_light">
+        android:layout_height="216dp"
+        android:elevation="12dp"
+        android:translationY="144dp">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/playerbar_button_play"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_centerInParent="true"
-            android:background="?attr/selectableItemBackground"
-            android:theme="@style/CustomFloatingActionButtonTheme"/>
-
-
-        <ImageButton
-            android:id="@+id/playerbar_button_previous"
-            android:layout_width="wrap_content"
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:max="100"
+            android:progressBackgroundTint="@android:color/transparent"
+            android:progressTint="@color/meta_orange"
+            android:id="@+id/playerbar_progressbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_previous_playerbar"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_toLeftOf="@id/playerbar_button_play"/>
+            android:layout_gravity="bottom"
+            android:indeterminate="true"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_useIntrinsicPadding="false"
+            app:mpb_showTrack="false"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding" />
 
-        <ImageButton
-            android:id="@+id/playerbar_button_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_next_playerbar"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_toRightOf="@id/playerbar_button_play"/>
+            <RelativeLayout
+                android:elevation="4dp"
+                android:id="@+id/playerbar"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:background="@color/md_grey_100"
+                android:outlineProvider="bounds">
 
-    </RelativeLayout>
+                    <ImageButton
+                        android:id="@+id/playerbar_button_play"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_pause_playerbar"
+                        android:background="@drawable/background_circle_blue_ripple"
+                        android:theme="@style/CustomFloatingActionButtonTheme"/>
 
+
+                    <ImageButton
+                        android:id="@+id/playerbar_button_previous"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_previous_playerbar"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_toLeftOf="@id/playerbar_button_play"/>
+
+                    <ImageButton
+                        android:id="@+id/playerbar_button_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_next_playerbar"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_toRightOf="@id/playerbar_button_play"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/playerbar_button_previous">
+
+                    <ImageButton
+                        android:id="@+id/playerbar_button_shuffle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_shuffle_playerbar"
+                        android:background="?attr/selectableItemBackgroundBorderless"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/playerbar_button_next">
+
+                    <ImageButton
+                        android:id="@+id/playerbar_button_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_more_playerbar"
+                        android:background="?attr/selectableItemBackgroundBorderless"/>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:padding="20dp">
+            <ImageButton
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:id="@+id/playerbar_button_mute"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_volume_playerbar"
+                android:layout_marginRight="12dp"/>
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/playerbar_volume_seekbar"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="-12dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:padding="20dp">
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+                <ImageButton
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:id="@+id/playerbar_button_replay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_replay_playerbar"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+                <ImageButton
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:id="@+id/playerbar_button_torrents"
+                    android:layout_gravity="center_vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_torrent_playerbar"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+                <ImageButton
+                    android:layout_centerHorizontal="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:id="@+id/playerbar_button_browser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_browser_playerbar"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+                <ImageButton
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:id="@+id/playerbar_button_airplay"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_airplay_playerbar"/>
+                </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+                <ImageButton
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:id="@+id/playerbar_button_clear_playlist"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_delete_playerbar"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

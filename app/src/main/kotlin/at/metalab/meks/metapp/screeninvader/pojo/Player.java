@@ -22,11 +22,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Player {
 
     @JsonProperty("active")
-    private boolean active;
+    private String active;
     @JsonProperty("category")
     private String category;
     @JsonProperty("paused")
-    private boolean paused;
+    private String paused;
     @JsonProperty("url")
     private String url;
     @JsonIgnore
@@ -38,7 +38,7 @@ public class Player {
      *     The active
      */
     @JsonProperty("active")
-    public boolean getActive() {
+    public String getActive() {
         return active;
     }
 
@@ -48,7 +48,7 @@ public class Player {
      *     The active
      */
     @JsonProperty("active")
-    public void setActive(boolean active) {
+    public void setActive(String active) {
         this.active = active;
     }
 
@@ -78,7 +78,7 @@ public class Player {
      *     The paused
      */
     @JsonProperty("paused")
-    public boolean getPaused() {
+    public String getPaused() {
         return paused;
     }
 
@@ -88,7 +88,7 @@ public class Player {
      *     The paused
      */
     @JsonProperty("paused")
-    public void setPaused(boolean paused) {
+    public void setPaused(String paused) {
         this.paused = paused;
     }
 
