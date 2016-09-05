@@ -44,6 +44,8 @@ dependencies {
     compile 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.3'
     compile 'me.zhanghai.android.materialprogressbar:library:1.1.7'
+    compile 'com.google.apis:google-api-services-youtube:v3-rev178-1.22.0'
+    compile 'com.google.apis:google-api-services-oauth2:v1-rev121-1.22.0'
 }
 repositories {
     mavenCentral()

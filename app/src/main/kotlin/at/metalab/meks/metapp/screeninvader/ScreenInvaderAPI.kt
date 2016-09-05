@@ -48,12 +48,6 @@ class ScreenInvaderAPI(val context : Context) {
 
     private var mWebSocketClient: WebSocketClient? = null
 
-    private var currentItemUrl: String? = null
-
-    private var playerObject: JSONObject? = null
-    private var soundObject: JSONObject? = null
-    lateinit var playlistArray: JSONArray
-
     //WebSockets! foar Screeninvader
     fun connectWebSocket() {
         val uri: URI
@@ -66,8 +60,8 @@ class ScreenInvaderAPI(val context : Context) {
 
         mWebSocketClient = object : WebSocketClient(uri) {
             override fun onOpen(serverHandshake: ServerHandshake) {
-                Log.i("Websocket", "Opened")
                 Looper.prepare()
+                Log.i("Websocket", "Opened")
                 getOnScreenInvaderMessageListener().onWebsocketOpened()
                 mWebSocketClient!!.send("setup")
             }

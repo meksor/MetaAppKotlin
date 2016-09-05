@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:id="@+id/playlist_row_root"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/playlist_row_thumbnail"
+        android:layout_width="113dp"
+        android:layout_height="64dp"
+        android:layout_marginRight="16dp">
+
+    </ImageView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="64dp"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:id="@+id/playlist_row_title"
+            android:textColor="@color/black_alpha_87"
+            android:text="The funniest Video you will ever see!"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"/>
+
+         <TextView
+             android:id="@+id/playlist_row_description"
+             android:textColor="@color/black_alpha_54"
+            android:text="The funniest Description you will ever read!"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,10 +1,11 @@
-package at.metalab.meks.metapp.screeninvader
+package at.metalab.meks.metapp.screeninvader.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import at.metalab.meks.metapp.R
+import at.metalab.meks.metapp.screeninvader.ScreenInvaderActivtiy
 import org.jetbrains.anko.find
 
 /**
@@ -34,6 +35,6 @@ class PlayerBarClearPlaylistFragment() : PlayerBarBaseFragment() {
         return FragmentType.CLEAR
     }
 
-    override fun onFragmentViewUpdated(type: ScreenInvaderActivtiy.View, enabled: Boolean) {
+    override fun onFragmentViewUpdated(type: ScreenInvaderActivtiy.UiComponent, enabled: Boolean) {
     }
 }

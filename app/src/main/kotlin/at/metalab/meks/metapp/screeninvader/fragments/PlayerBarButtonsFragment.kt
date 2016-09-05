@@ -1,4 +1,4 @@
-package at.metalab.meks.metapp.screeninvader
+package at.metalab.meks.metapp.screeninvader.fragments
 
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import at.metalab.meks.metapp.R
+import at.metalab.meks.metapp.screeninvader.ScreenInvaderActivtiy
 import org.jetbrains.anko.find
 
 /**
@@ -41,13 +42,16 @@ class PlayerBarButtonsFragment() : PlayerBarBaseFragment() {
         Buttons.mClearButton.setOnClickListener(activity as ScreenInvaderActivtiy)
     }
 
-    override fun onFragmentViewUpdated(type: ScreenInvaderActivtiy.View, enabled : Boolean) {
+    override fun onFragmentViewUpdated(type: ScreenInvaderActivtiy.UiComponent, enabled : Boolean) {
         when (type) {
-            ScreenInvaderActivtiy.View.BUTTON_TORRENTS -> {
-                Buttons.mTorrentButton.background.setColorFilter(if (enabled) R.color.meta_orange else R.color.meta_dunkelblau, PorterDuff.Mode.SRC_ATOP )
+            ScreenInvaderActivtiy.UiComponent.BUTTON_TORRENTS -> {
+                Buttons.mTorrentButton.background.setColorFilter(if (enabled) R.color.meta_orange else R.color.meta_dunkelblau, PorterDuff.Mode.SRC_ATOP)
             }
-            ScreenInvaderActivtiy.View.BUTTON_SHAIRPLAY -> {
-                Buttons.mShairplayButton.background.setColorFilter(if (enabled) R.color.meta_orange else R.color.meta_dunkelblau, PorterDuff.Mode.SRC_ATOP )
+            ScreenInvaderActivtiy.UiComponent.BUTTON_SHAIRPLAY -> {
+                Buttons.mShairplayButton.background.setColorFilter(if (enabled) R.color.meta_orange else R.color.meta_dunkelblau, PorterDuff.Mode.SRC_ATOP)
+            }
+            else ->{
+                //TODO: Implement Other things
             }
         }
     }

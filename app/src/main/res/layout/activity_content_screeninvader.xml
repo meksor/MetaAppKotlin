@@ -100,6 +100,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:background="@color/md_grey_50"
             android:layout_height="72dp"
             android:padding="20dp">
             <ImageButton
@@ -122,8 +123,13 @@
         <FrameLayout
             android:id="@+id/playerbar_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="72dp">
-
-        </FrameLayout>
+            android:layout_height="72dp"/>
     </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="72dp"
+        android:id="@+id/screeninvader_recyclerview"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

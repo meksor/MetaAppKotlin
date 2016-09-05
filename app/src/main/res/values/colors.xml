@@ -5,6 +5,9 @@
     <color name="meta_duenkelerblau">#182E46</color>
     <color name="meta_kontrast">#334B6A</color>
     <color name="meta_orange">#CC6427</color>
+    
+    <color name="black_alpha_54">#89000000</color>
+    <color name="black_alpha_87">#DD000000</color>
 
     <color name="md_disabled">#61000000</color>
 
@@ -13,6 +16,7 @@
 
     <color name="md_grey_50">#FAFAFA</color>
     <color name="md_grey_100">#F5F5F5</color>
+    <color name="md_grey_300">#E0E0E0</color>
 
     <color name="md_blue_grey_100">#CFD8DC</color>
 
