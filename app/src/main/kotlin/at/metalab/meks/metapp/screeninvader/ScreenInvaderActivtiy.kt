@@ -3,9 +3,12 @@ package at.metalab.meks.metapp.screeninvader
 import android.app.FragmentTransaction
 import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.CoordinatorLayout
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +22,8 @@ import at.metalab.meks.metapp.screeninvader.fragments.PlayerBarButtonsFragment
 import at.metalab.meks.metapp.screeninvader.fragments.PlayerBarClearPlaylistFragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.java_websocket.exceptions.WebsocketNotConnectedException
+import java.net.ConnectException
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,6 +31,7 @@ import java.util.*
 /**
  * Created by meks on 01.09.2016.
  */
+
 class ScreenInvaderActivtiy : BaseDrawerActivity(),
         View.OnClickListener,
         ScreenInvaderAPI.OnScreenInvaderMessageListener {
@@ -38,6 +44,7 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
     private lateinit var mVolumeBar: SeekBar
     private lateinit var mPlayerBarMoreLayout: LinearLayout
     private lateinit var mPlaylistRecyclerView : RecyclerView
+    private lateinit var mPlaylistAdapter : PlaylistAdapter
 
     private lateinit var mCurrentPlayerbarFragment : PlayerBarBaseFragment
 
@@ -84,6 +91,7 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
         Buttons.mNextButton = findViewById(R.id.playerbar_button_next) as ImageButton
         Buttons.mShuffleButton = findViewById(R.id.playerbar_button_shuffle) as ImageButton
 
+        findViewById(R.id.screeninvader_error_retry_button).setOnClickListener(this)
         Buttons.mMoreButton.setOnClickListener(this)
         Buttons.mMuteButton.setOnClickListener(this)
         Buttons.mPlayButton.setOnClickListener(this)
@@ -98,12 +106,15 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
             override fun onStartTrackingTouch(seekBar : SeekBar) {
             }
             override fun onProgressChanged(seekBar : SeekBar, progress : Int, fromUser : Boolean) {
-                updateUiComponent(UiComponent.BUTTON_MUTE)
+                if (mSyncedWithScreenInvader) {
+                    updateUiComponent(UiComponent.BUTTON_MUTE)
+                }
                 if (fromUser) {
                     mScreenInvaderAPI.sendSICommandTrigger(ScreenInvaderAPI.COMMANDS.VOLUME_SET, progress.toString())
                 }
             }
         })
+        onWebsocketConnectionStatusChanged(false)
         mScreenInvaderAPI.connectWebSocket()
         showFragment(PlayerBarBaseFragment.FragmentType.BUTTONS)
     }
@@ -160,6 +171,11 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
             R.id.playerbar_button_cancel_clear_playlist -> {
                 showFragment(PlayerBarBaseFragment.FragmentType.BUTTONS)
             }
+            R.id.screeninvader_error_retry_button -> {
+                findViewById(R.id.screeninvader_error_view).visibility = View.INVISIBLE
+                findViewById(R.id.screeninvader_connection_progressbar).visibility = View.VISIBLE
+                mScreenInvaderAPI.connectWebSocket()
+            }
         }
     }
 
@@ -171,7 +187,6 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
         }
         when (message) {
             ScreenInvaderAPI.Message.NOTIFY_SEND -> {
-
             }
             ScreenInvaderAPI.Message.PLAYER_TIME_POS -> {
                 val playerTimePos = parseSimpleGson<ArrayList <String>>(data)
@@ -185,7 +200,6 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
                         mProgressBar.isIndeterminate = false
                         mProgressBar.progress = (100 - percentage)
                     })
-
                 } catch (e : ParseException) {
                     Log.i("Unparsable SI Message", data)
                 }
@@ -201,6 +215,12 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
             ScreenInvaderAPI.Message.VOLUME_CHANGED -> {
                 mScreenInvaderObject.sound.volume = data.replace(" ", "")
                 mVolumeBar.progress = data.replace(" ", "").toInt()
+            }
+            ScreenInvaderAPI.Message.PLAYLIST_INDEX_CHANGED -> {
+                this@ScreenInvaderActivtiy.runOnUiThread({
+                    mScreenInvaderObject.playlist.index = data
+                    mPlaylistAdapter.notifyDataSetChanged()
+                })
             }
         }
     }
@@ -251,9 +271,9 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
                     mVolumeBar.progress = mScreenInvaderObject.sound.volume.toInt()
                 }
                 UiComponent.PLAYLIST_VIEW -> {
-                    val adapter = PlaylistAdapter(this, mScreenInvaderObject, mScreenInvaderAPI)
-                    mPlaylistRecyclerView.adapter = adapter
-                    adapter.notifyDataSetChanged()
+                    mPlaylistAdapter = PlaylistAdapter(this, mScreenInvaderObject, mScreenInvaderAPI)
+                    mPlaylistRecyclerView.adapter = mPlaylistAdapter
+                    mPlaylistAdapter.notifyDataSetChanged()
                 }
                 else -> {
                     //TODO: Other things
@@ -266,8 +286,18 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
     }
 
     override fun onWebsocketError(exception: Exception) {
-        onWebsocketConnectionStatusChanged(false)
         exception.printStackTrace()
+        this@ScreenInvaderActivtiy.runOnUiThread({
+            if (exception is ConnectException){
+                findViewById(R.id.screeninvader_connection_progressbar).visibility = View.INVISIBLE
+                (findViewById(R.id.screeninvader_error_message_textview) as TextView).text = exception.message
+                findViewById(R.id.screeninvader_error_view).visibility = View.VISIBLE
+            } else if (exception is WebsocketNotConnectedException) {
+                findViewById(R.id.screeninvader_connection_progressbar).visibility = View.INVISIBLE
+                (findViewById(R.id.screeninvader_error_message_textview) as TextView).text = exception.message
+                findViewById(R.id.screeninvader_error_view).visibility = View.VISIBLE
+            }
+        })
     }
 
 
@@ -314,7 +344,10 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
             Buttons.mNextButton.alpha = if (opened) 1f else 0.54f
             Buttons.mPreviousButton.alpha = if (opened) 1f else 0.54f
             Buttons.mPlayButton.background = if (opened) getDrawable(R.drawable.background_circle_blue_ripple)
-                                                else getDrawable(R.drawable.background_circle_grey_ripple)
+                                                    else getDrawable(R.drawable.background_circle_grey_ripple)
+
+            findViewById(R.id.screeninvader_connection_progressbar).visibility = if (opened) View.INVISIBLE
+                                                                                        else View.VISIBLE
         })
     }
 

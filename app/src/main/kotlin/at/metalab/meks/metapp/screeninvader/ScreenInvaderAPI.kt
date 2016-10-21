@@ -5,9 +5,9 @@ import android.os.Looper
 import android.util.Log
 
 import org.java_websocket.client.WebSocketClient
+import org.java_websocket.drafts.Draft_10
 import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONArray
-import org.json.JSONObject
 
 import java.net.URI
 import java.net.URISyntaxException
@@ -58,7 +58,7 @@ class ScreenInvaderAPI(val context : Context) {
             return
         }
 
-        mWebSocketClient = object : WebSocketClient(uri) {
+        mWebSocketClient = object : WebSocketClient(uri, Draft_10(), null, 1/1000000) {
             override fun onOpen(serverHandshake: ServerHandshake) {
                 Looper.prepare()
                 Log.i("Websocket", "Opened")
@@ -151,7 +151,10 @@ class ScreenInvaderAPI(val context : Context) {
                     "/sound/volume" -> {
                         getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.VOLUME_CHANGED, eventParam)
                     }
-                    else -> getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.SHAIRPORT_ACTIVE_STATUS, "Unknown Event Type: " + eventType)
+                    "/playlist/index" -> {
+                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYLIST_INDEX_CHANGED, eventParam)
+                    }
+                    else -> Log.e("Unknown Event Type: ", eventType)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -165,7 +168,8 @@ class ScreenInvaderAPI(val context : Context) {
         PLAYER_TIME_POS,
         PLAYER_PAUSE_STATUS,
         SHAIRPORT_ACTIVE_STATUS,
-        VOLUME_CHANGED
+        VOLUME_CHANGED,
+        PLAYLIST_INDEX_CHANGED
     }
 
     interface OnScreenInvaderMessageListener {

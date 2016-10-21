@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:id="@+id/playlist_row_root"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:clickable="true"
     android:paddingRight="16dp"
     android:paddingLeft="16dp"
     android:paddingTop="8dp"

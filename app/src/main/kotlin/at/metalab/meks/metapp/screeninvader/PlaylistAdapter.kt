@@ -41,13 +41,13 @@ class PlaylistAdapter(val context : Context, var mSreeninvaderObject : Screeninv
         holder.mDescriptionView.text = "Implement me!"
         holder.mThumbnailView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cancel_playerbar))
         holder.mItemView.setOnClickListener{
-            mScreenInvaderAPI.sendSICommandPublish(ScreenInvaderAPI.COMMANDS.PLAYER_JUMP, position.toString())
+            mScreenInvaderAPI.sendSICommandPublish(ScreenInvaderAPI.COMMANDS.PLAYER_JUMP, ((mSreeninvaderObject.playlist.items.size - position) - 1).toString())
         }
-        holder.mRootLayout.backgroundColor =
-                if (mSreeninvaderObject.player.url == item.source)
-                    ContextCompat.getColor(context, R.color.md_grey_300)
-                else
-                    ContextCompat.getColor(context, R.color.md_grey_50)
+        if (mSreeninvaderObject.playlist.index.toInt() == ((mSreeninvaderObject.playlist.items.size - position) - 1)){
+            holder.mRootLayout.backgroundColor = ContextCompat.getColor(context, R.color.md_grey_300)
+        } else {
+            holder.mRootLayout.backgroundColor = ContextCompat.getColor(context, R.color.md_grey_50)
+        }
     }
 
     override fun getItemCount(): Int {
