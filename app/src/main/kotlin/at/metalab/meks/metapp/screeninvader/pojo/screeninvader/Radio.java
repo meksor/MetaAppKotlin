@@ -1,5 +1,5 @@
 
-package at.metalab.meks.metapp.screeninvader.pojo;
+package at.metalab.meks.metapp.screeninvader.pojo.screeninvader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,79 +14,79 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-    "device",
-    "mute",
-    "volume"
+    "active",
+    "category",
+    "url"
 })
-public class Sound {
+public class Radio {
 
-    @JsonProperty("device")
-    private String device;
-    @JsonProperty("mute")
-    private String mute;
-    @JsonProperty("volume")
-    private String volume;
+    @JsonProperty("active")
+    private String active;
+    @JsonProperty("category")
+    private String category;
+    @JsonProperty("url")
+    private String url;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * 
      * @return
-     *     The device
+     *     The active
      */
-    @JsonProperty("device")
-    public String getDevice() {
-        return device;
+    @JsonProperty("active")
+    public String getActive() {
+        return active;
     }
 
     /**
      * 
-     * @param device
-     *     The device
+     * @param active
+     *     The active
      */
-    @JsonProperty("device")
-    public void setDevice(String device) {
-        this.device = device;
-    }
-
-    /**
-     * 
-     * @return
-     *     The mute
-     */
-    @JsonProperty("mute")
-    public String getMute() {
-        return mute;
-    }
-
-    /**
-     * 
-     * @param mute
-     *     The mute
-     */
-    @JsonProperty("mute")
-    public void setMute(String mute) {
-        this.mute = mute;
+    @JsonProperty("active")
+    public void setActive(String active) {
+        this.active = active;
     }
 
     /**
      * 
      * @return
-     *     The volume
+     *     The category
      */
-    @JsonProperty("volume")
-    public String getVolume() {
-        return volume;
+    @JsonProperty("category")
+    public String getCategory() {
+        return category;
     }
 
     /**
      * 
-     * @param volume
-     *     The volume
+     * @param category
+     *     The category
      */
-    @JsonProperty("volume")
-    public void setVolume(String volume) {
-        this.volume = volume;
+    @JsonProperty("category")
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    /**
+     * 
+     * @return
+     *     The url
+     */
+    @JsonProperty("url")
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * 
+     * @param url
+     *     The url
+     */
+    @JsonProperty("url")
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @JsonAnyGetter

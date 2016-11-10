@@ -1,5 +1,5 @@
 
-package at.metalab.meks.metapp.screeninvader.pojo;
+package at.metalab.meks.metapp.screeninvader.pojo.screeninvader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "category",
     "url"
 })
-public class Radio {
+public class Animation {
 
     @JsonProperty("active")
     private String active;

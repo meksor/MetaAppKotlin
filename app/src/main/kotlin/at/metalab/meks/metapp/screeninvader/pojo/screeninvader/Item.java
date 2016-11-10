@@ -1,5 +1,5 @@
 
-package at.metalab.meks.metapp.screeninvader.pojo;
+package at.metalab.meks.metapp.screeninvader.pojo.screeninvader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,40 +14,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-    "active",
     "category",
+    "source",
+    "title",
     "url"
 })
-public class Image {
+public class Item {
 
-    @JsonProperty("active")
-    private String active;
     @JsonProperty("category")
     private String category;
+    @JsonProperty("source")
+    private String source;
+    @JsonProperty("title")
+    private String title;
     @JsonProperty("url")
     private String url;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    /**
-     * 
-     * @return
-     *     The active
-     */
-    @JsonProperty("active")
-    public String getActive() {
-        return active;
-    }
-
-    /**
-     * 
-     * @param active
-     *     The active
-     */
-    @JsonProperty("active")
-    public void setActive(String active) {
-        this.active = active;
-    }
 
     /**
      * 
@@ -67,6 +50,46 @@ public class Image {
     @JsonProperty("category")
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    /**
+     * 
+     * @return
+     *     The source
+     */
+    @JsonProperty("source")
+    public String getSource() {
+        return source;
+    }
+
+    /**
+     * 
+     * @param source
+     *     The source
+     */
+    @JsonProperty("source")
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    /**
+     * 
+     * @return
+     *     The title
+     */
+    @JsonProperty("title")
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * 
+     * @param title
+     *     The title
+     */
+    @JsonProperty("title")
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**

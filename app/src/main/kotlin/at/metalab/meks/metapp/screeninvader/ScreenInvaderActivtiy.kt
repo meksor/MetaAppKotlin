@@ -5,8 +5,11 @@ import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -16,7 +19,7 @@ import android.widget.*
 import at.metalab.meks.metapp.BaseDrawerActivity
 import at.metalab.meks.metapp.R
 import at.metalab.meks.metapp.convertDpToPixel
-import at.metalab.meks.metapp.screeninvader.pojo.ScreeninvaderObject
+import at.metalab.meks.metapp.screeninvader.pojo.screeninvader.ScreeninvaderObject
 import at.metalab.meks.metapp.screeninvader.fragments.PlayerBarBaseFragment
 import at.metalab.meks.metapp.screeninvader.fragments.PlayerBarButtonsFragment
 import at.metalab.meks.metapp.screeninvader.fragments.PlayerBarClearPlaylistFragment
@@ -45,6 +48,8 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
     private lateinit var mPlayerBarMoreLayout: LinearLayout
     private lateinit var mPlaylistRecyclerView : RecyclerView
     private lateinit var mPlaylistAdapter : PlaylistAdapter
+    private lateinit var mItemTouchHelper: ItemTouchHelper
+
 
     private lateinit var mCurrentPlayerbarFragment : PlayerBarBaseFragment
 
@@ -71,7 +76,8 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
         mProgressBar = findViewById(R.id.playerbar_progressbar) as ProgressBar
 
         mPlaylistRecyclerView = findViewById(R.id.screeninvader_recyclerview) as RecyclerView
-        mPlaylistRecyclerView.layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this)
+        mPlaylistRecyclerView.layoutManager = layoutManager
 
         mPlaylistRecyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
@@ -117,6 +123,7 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
         onWebsocketConnectionStatusChanged(false)
         mScreenInvaderAPI.connectWebSocket()
         showFragment(PlayerBarBaseFragment.FragmentType.BUTTONS)
+        onScreenInvaderMessage(ScreenInvaderAPI.Message.FULL_SYNC, MOCK_SCREENINVADER_JSON)
     }
 
     override fun onClick(p0: android.view.View?) {
@@ -142,7 +149,7 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
                 }
             }
             R.id.playerbar_button_more  -> {
-                updateUiComponent(UiComponent.BUTTON_MORE)
+                toggleSlidePlayerbarLayout()
             }
             R.id.playerbar_button_mute -> {
                 if (mScreenInvaderObject.sound.volume.replace(" ","").toInt() > 0){
@@ -239,7 +246,6 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
 
     enum class UiComponent {
         BUTTON_PLAY,
-        BUTTON_MORE,
         BUTTON_MUTE,
         VOLUME_BAR,
         BUTTON_SHAIRPLAY,
@@ -257,9 +263,6 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
                             Buttons.mPlayButton.setImageDrawable(getDrawable(R.drawable.ic_pause_playerbar))
                         }
                 }
-                UiComponent.BUTTON_MORE -> {
-                    toggleSlidePlayerbarLayout()
-                }
                 UiComponent.BUTTON_MUTE -> {
                     if (mScreenInvaderObject.sound.volume.replace(" ", "").toInt() > 0) {
                         Buttons.mMuteButton.setImageDrawable(getDrawable(R.drawable.ic_volume_playerbar))
@@ -273,7 +276,6 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
                 UiComponent.PLAYLIST_VIEW -> {
                     mPlaylistAdapter = PlaylistAdapter(this, mScreenInvaderObject, mScreenInvaderAPI)
                     mPlaylistRecyclerView.adapter = mPlaylistAdapter
-                    mPlaylistAdapter.notifyDataSetChanged()
                 }
                 else -> {
                     //TODO: Other things

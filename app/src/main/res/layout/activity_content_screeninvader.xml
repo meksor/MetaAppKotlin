@@ -11,11 +11,13 @@
     <LinearLayout
         android:id="@+id/playerbar_more_layout"
         android:orientation="vertical"
+e        android:background="@color/md_grey_50"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="218dp"
         android:elevation="12dp"
-        android:translationY="144dp">
+        android:translationY="144dp"
+        android:clickable="true">
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:max="100"

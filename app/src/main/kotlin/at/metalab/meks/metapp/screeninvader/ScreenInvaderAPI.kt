@@ -44,6 +44,8 @@ class ScreenInvaderAPI(val context : Context) {
 
         const val VOLUME_SET : String = "/sound/volume"
 
+        const val PLAYLIST_REMOVE : String = "playlistRemove"
+
     }
 
     private var mWebSocketClient: WebSocketClient? = null

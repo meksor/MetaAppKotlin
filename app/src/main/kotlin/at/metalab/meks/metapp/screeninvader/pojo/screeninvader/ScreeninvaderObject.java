@@ -1,5 +1,5 @@
 
-package at.metalab.meks.metapp.screeninvader.pojo;
+package at.metalab.meks.metapp.screeninvader.pojo.screeninvader;
 
 import java.util.HashMap;
 import java.util.Map;

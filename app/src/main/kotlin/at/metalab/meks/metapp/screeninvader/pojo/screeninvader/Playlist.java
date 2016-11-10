@@ -1,7 +1,9 @@
 
-package at.metalab.meks.metapp.screeninvader.pojo;
+package at.metalab.meks.metapp.screeninvader.pojo.screeninvader;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -14,79 +16,79 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-    "active",
-    "category",
-    "url"
+    "index",
+    "items",
+    "queue"
 })
-public class Browser {
+public class Playlist {
 
-    @JsonProperty("active")
-    private String active;
-    @JsonProperty("category")
-    private String category;
-    @JsonProperty("url")
-    private String url;
+    @JsonProperty("index")
+    private String index;
+    @JsonProperty("items")
+    private List<Item> items = new ArrayList<Item>();
+    @JsonProperty("queue")
+    private String queue;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * 
      * @return
-     *     The active
+     *     The index
      */
-    @JsonProperty("active")
-    public String getActive() {
-        return active;
+    @JsonProperty("index")
+    public String getIndex() {
+        return index;
     }
 
     /**
      * 
-     * @param active
-     *     The active
+     * @param index
+     *     The index
      */
-    @JsonProperty("active")
-    public void setActive(String active) {
-        this.active = active;
-    }
-
-    /**
-     * 
-     * @return
-     *     The category
-     */
-    @JsonProperty("category")
-    public String getCategory() {
-        return category;
-    }
-
-    /**
-     * 
-     * @param category
-     *     The category
-     */
-    @JsonProperty("category")
-    public void setCategory(String category) {
-        this.category = category;
+    @JsonProperty("index")
+    public void setIndex(String index) {
+        this.index = index;
     }
 
     /**
      * 
      * @return
-     *     The url
+     *     The items
      */
-    @JsonProperty("url")
-    public String getUrl() {
-        return url;
+    @JsonProperty("items")
+    public List<Item> getItems() {
+        return items;
     }
 
     /**
      * 
-     * @param url
-     *     The url
+     * @param items
+     *     The items
      */
-    @JsonProperty("url")
-    public void setUrl(String url) {
-        this.url = url;
+    @JsonProperty("items")
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    /**
+     * 
+     * @return
+     *     The queue
+     */
+    @JsonProperty("queue")
+    public String getQueue() {
+        return queue;
+    }
+
+    /**
+     * 
+     * @param queue
+     *     The queue
+     */
+    @JsonProperty("queue")
+    public void setQueue(String queue) {
+        this.queue = queue;
     }
 
     @JsonAnyGetter

@@ -1,9 +1,7 @@
 
-package at.metalab.meks.metapp.screeninvader.pojo;
+package at.metalab.meks.metapp.screeninvader.pojo.screeninvader;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -16,79 +14,79 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-    "index",
-    "items",
-    "queue"
+    "device",
+    "mute",
+    "volume"
 })
-public class Playlist {
+public class Sound {
 
-    @JsonProperty("index")
-    private String index;
-    @JsonProperty("items")
-    private List<Item> items = new ArrayList<Item>();
-    @JsonProperty("queue")
-    private String queue;
+    @JsonProperty("device")
+    private String device;
+    @JsonProperty("mute")
+    private String mute;
+    @JsonProperty("volume")
+    private String volume;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * 
      * @return
-     *     The index
+     *     The device
      */
-    @JsonProperty("index")
-    public String getIndex() {
-        return index;
+    @JsonProperty("device")
+    public String getDevice() {
+        return device;
     }
 
     /**
      * 
-     * @param index
-     *     The index
+     * @param device
+     *     The device
      */
-    @JsonProperty("index")
-    public void setIndex(String index) {
-        this.index = index;
-    }
-
-    /**
-     * 
-     * @return
-     *     The items
-     */
-    @JsonProperty("items")
-    public List<Item> getItems() {
-        return items;
-    }
-
-    /**
-     * 
-     * @param items
-     *     The items
-     */
-    @JsonProperty("items")
-    public void setItems(List<Item> items) {
-        this.items = items;
+    @JsonProperty("device")
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     /**
      * 
      * @return
-     *     The queue
+     *     The mute
      */
-    @JsonProperty("queue")
-    public String getQueue() {
-        return queue;
+    @JsonProperty("mute")
+    public String getMute() {
+        return mute;
     }
 
     /**
      * 
-     * @param queue
-     *     The queue
+     * @param mute
+     *     The mute
      */
-    @JsonProperty("queue")
-    public void setQueue(String queue) {
-        this.queue = queue;
+    @JsonProperty("mute")
+    public void setMute(String mute) {
+        this.mute = mute;
+    }
+
+    /**
+     * 
+     * @return
+     *     The volume
+     */
+    @JsonProperty("volume")
+    public String getVolume() {
+        return volume;
+    }
+
+    /**
+     * 
+     * @param volume
+     *     The volume
+     */
+    @JsonProperty("volume")
+    public void setVolume(String volume) {
+        this.volume = volume;
     }
 
     @JsonAnyGetter

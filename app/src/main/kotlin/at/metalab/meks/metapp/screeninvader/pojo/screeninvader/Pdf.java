@@ -1,5 +1,5 @@
 
-package at.metalab.meks.metapp.screeninvader.pojo;
+package at.metalab.meks.metapp.screeninvader.pojo.screeninvader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,17 +16,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "active",
     "category",
-    "paused",
     "url"
 })
-public class Player {
+public class Pdf {
 
     @JsonProperty("active")
     private String active;
     @JsonProperty("category")
     private String category;
-    @JsonProperty("paused")
-    private String paused;
     @JsonProperty("url")
     private String url;
     @JsonIgnore
@@ -70,26 +67,6 @@ public class Player {
     @JsonProperty("category")
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    /**
-     * 
-     * @return
-     *     The paused
-     */
-    @JsonProperty("paused")
-    public String getPaused() {
-        return paused;
-    }
-
-    /**
-     * 
-     * @param paused
-     *     The paused
-     */
-    @JsonProperty("paused")
-    public void setPaused(String paused) {
-        this.paused = paused;
     }
 
     /**
