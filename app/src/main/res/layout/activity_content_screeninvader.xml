@@ -1,59 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/activity_content_screeninvader_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light">
+    android:orientation="vertical"
+    android:background="@color/md_grey_50"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/playerbar_more_layout"
+        android:orientation="vertical"
+e        android:background="@color/md_grey_50"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@android:color/background_light"
-        android:layout_gravity="bottom"
-        android:elevation="4dp">
+        android:layout_height="218dp"
+        android:elevation="12dp"
+        android:translationY="144dp"
+        android:clickable="true">
 
-        <com.dmitrymalkovich.android.ProgressFloatingActionButton
-            android:id="@+id/playerbar_button_play_progress_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_centerInParent="true"
-            android:clickable="true">
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:max="100"
+            android:progressBackgroundTint="@android:color/transparent"
+            android:progressTint="@color/meta_orange"
+            android:id="@+id/playerbar_progressbar"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="bottom"
+            android:indeterminate="true"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_useIntrinsicPadding="false"
+            app:mpb_showTrack="false"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/playerbar_button_play"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackground"
-            android:theme="@style/CustomFloatingActionButtonTheme"/>
+        <RelativeLayout
+            android:elevation="4dp"
+            android:id="@+id/playerbar"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:background="@color/md_grey_100"
+            android:outlineProvider="bounds">
 
-            <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar"
+            <ImageButton
+                android:id="@+id/playerbar_button_play"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_pause_playerbar"
+                android:background="@drawable/background_circle_blue_ripple"
+                android:theme="@style/CustomFloatingActionButtonTheme"/>
 
+
+            <ImageButton
+                android:id="@+id/playerbar_button_previous"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_previous_playerbar"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_toLeftOf="@id/playerbar_button_play"/>
 
-        </com.dmitrymalkovich.android.ProgressFloatingActionButton>
+            <ImageButton
+                android:id="@+id/playerbar_button_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_next_playerbar"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_toRightOf="@id/playerbar_button_play"/>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/playerbar_button_previous">
 
-        <ImageButton
-            android:id="@+id/playerbar_button_previous"
+                <ImageButton
+                    android:id="@+id/playerbar_button_shuffle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_shuffle_playerbar"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/playerbar_button_next">
+
+                <ImageButton
+                    android:id="@+id/playerbar_button_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_more_playerbar"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+            </RelativeLayout>
+
+            </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/md_grey_50"
+            android:layout_height="72dp"
+            android:padding="20dp">
+            <ImageButton
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:id="@+id/playerbar_button_mute"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_volume_playerbar"
+                android:layout_marginRight="12dp"/>
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/playerbar_volume_seekbar"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="-12dp"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/playerbar_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"/>
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="72dp"
+        android:id="@+id/screeninvader_recyclerview"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"/>
+
+    <LinearLayout
+        android:id="@+id/screeninvader_error_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/screeninvader_error_message_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_previous_playerbar"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_toLeftOf="@id/playerbar_button_play_progress_layout"/>
+            android:textColor="@color/md_red_800"
+            android:text="This text should have been changed programmatically!"
+            android:textSize="17sp"/>
 
-        <ImageButton
-            android:id="@+id/playerbar_button_next"
+        <Button
+            android:id="@+id/screeninvader_error_retry_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_next_playerbar"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_toRightOf="@id/playerbar_button_play_progress_layout"/>
+            android:text="@string/button_label_try_agein"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
 
-    </RelativeLayout>
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/screeninvader_connection_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="@android:style/Widget.Material.Light.ProgressBar"/>
+</RelativeLayout>

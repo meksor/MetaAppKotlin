@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:id="@+id/playlist_row_control_view"
+        android:background="?android:attr/activatedBackgroundIndicator"
+        android:clickable="true"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@color/md_red_800"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="94dp"
+            android:layout_marginTop="29dp"
+            android:id="@+id/imageButton" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:id="@+id/playlist_row_root"
+        android:background="@color/white"
+        android:clickable="true"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:attr/activatedBackgroundIndicator">
+
+            <ImageView
+                android:id="@+id/playlist_row_thumbnail"
+                android:scaleType="centerCrop"
+                android:layout_width="113dp"
+                android:layout_height="64dp"
+                android:layout_marginRight="16dp">
+
+            </ImageView>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_height="64dp"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:id="@+id/playlist_row_title"
+                    android:textColor="@color/black_alpha_87"
+                    android:text="The funniest Video you will ever see!"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"/>
+
+                 <TextView
+                     android:id="@+id/playlist_row_description"
+                     android:textColor="@color/black_alpha_54"
+                    android:text="The funniest Description you will ever read!"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

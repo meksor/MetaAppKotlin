@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<RelativeLayout
+    android:layout_centerInParent="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:background="@color/md_red_800">
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:text="@string/confirm_clear_playlist">
+
+    </TextView>
+
+
+    <ImageButton
+        android:layout_centerInParent="true"
+        android:id="@+id/playerbar_button_cancel_clear_playlist"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_cancel_playerbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ImageButton>
+
+    <Button
+        android:layout_centerInParent="true"
+        android:id="@+id/playerbar_button_confirm_clear_playlist"
+        android:background="?attr/selectableItemBackground"
+        android:layout_toStartOf="@id/playerbar_button_cancel_clear_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/button_label_confirm_clear_playlist">
+    </Button>
+
+</RelativeLayout>
+</RelativeLayout>
