@@ -153,11 +153,11 @@ class ScreenInvaderAPI(val context: Context) {
                         Log.d("Got Notify:", eventParam)
                     }
                     "notifyLong" -> {
-                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_SEND, eventParam) //TODO: implement other uses
+                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_LONG, eventParam)
                         Log.d("Got Notify:", eventParam)
                     }
                     "notifyException" -> {
-                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_SEND, eventParam) //TODO: implement other uses
+                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_EXCEPTION, eventParam)
                         Log.d("Got Notify:", eventParam)
                     }
                     "playerTimePos" -> {
@@ -186,6 +186,8 @@ class ScreenInvaderAPI(val context: Context) {
     enum class Message {
         FULL_SYNC,
         NOTIFY_SEND,
+        NOTIFY_LONG,
+        NOTIFY_EXCEPTION,
         PLAYER_TIME_POS,
         PLAYER_PAUSE_STATUS,
         SHAIRPORT_ACTIVE_STATUS,

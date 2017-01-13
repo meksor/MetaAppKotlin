@@ -204,19 +204,13 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
         }
         when (message) {
             ScreenInvaderAPI.Message.NOTIFY_SEND -> {
-                val snackbar = TSnackbar.make(findViewById(R.id.activity_content_screeninvader_root), data, TSnackbar.LENGTH_LONG)
-                snackbar.view.elevation = convertDpToPixel(3f) //Snackbar needs to be behind Toolbar
-
-                val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
-                params.setMargins(0, convertDpToPixel(56f).toInt(),0,0)
-                snackbar.view.layoutParams = params
-
-                snackbar.view.backgroundColor = getColor(R.color.meta_kontrast)
-
-                val textView = snackbar.view.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text) as TextView
-                textView.setTextColor(Color.WHITE)
-
-                snackbar.show()
+                makeTopSnackbar(getColor(R.color.meta_kontrast), data, TSnackbar.LENGTH_SHORT)
+            }
+            ScreenInvaderAPI.Message.NOTIFY_LONG -> {
+                makeTopSnackbar(getColor(R.color.meta_kontrast), data, TSnackbar.LENGTH_LONG)
+            }
+            ScreenInvaderAPI.Message.NOTIFY_EXCEPTION -> {
+                makeTopSnackbar(getColor(R.color.meta_orange), data, TSnackbar.LENGTH_LONG)
             }
             ScreenInvaderAPI.Message.PLAYER_TIME_POS -> {
                 val playerTimePos = parseSimpleGson<ArrayList <String>>(data)
@@ -332,6 +326,22 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
                 findViewById(R.id.screeninvader_error_view).visibility = View.VISIBLE
             }
         })
+    }
+
+    private fun makeTopSnackbar(backgroundColor : Int, text : String, length : Int) {
+        val snackbar = TSnackbar.make(findViewById(R.id.activity_content_screeninvader_root), text, length)
+        snackbar.view.elevation = convertDpToPixel(3f) //Snackbar needs to be behind Toolbar
+
+        val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
+        params.setMargins(0, convertDpToPixel(56f).toInt(),0,0)
+        snackbar.view.layoutParams = params
+
+        snackbar.view.backgroundColor = backgroundColor
+
+        val textView = snackbar.view.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text) as TextView
+        textView.setTextColor(Color.WHITE)
+
+        snackbar.show()
     }
 
 
