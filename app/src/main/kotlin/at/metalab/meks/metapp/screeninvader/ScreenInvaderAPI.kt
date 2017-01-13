@@ -16,7 +16,7 @@ import java.net.URISyntaxException
  * Created by meks on 21.07.2016.
  */
 
-class ScreenInvaderAPI(val context : Context) {
+class ScreenInvaderAPI(val context: Context) {
 
     object COMMANDS {
 
@@ -24,27 +24,27 @@ class ScreenInvaderAPI(val context : Context) {
          * Constants for Commands WITHOUT params
         */
 
-        const val PLAYER_PAUSE : String = "playerPause"
+        const val PLAYER_PAUSE: String = "playerPause"
 
-        const val PLAYER_PLAY : String = "playerPlay"
+        const val PLAYER_PLAY: String = "playerPlay"
 
-        const val PLAYER_NEXT : String = "playerNext"
+        const val PLAYER_NEXT: String = "playerNext"
 
-        const val PLAYER_PREVIOUS : String = "playerPrevious"
+        const val PLAYER_PREVIOUS: String = "playerPrevious"
 
-        const val PLAYER_JUMP : String = "playerJump"
+        const val PLAYER_JUMP: String = "playerJump"
 
         const val SHAIRPORT_START: String = "shairportStart"
 
-        const val SHAIRPORT_STOP : String = "shairportStop"
+        const val SHAIRPORT_STOP: String = "shairportStop"
 
         /*
          * Constants for Commands WITH params
          */
 
-        const val VOLUME_SET : String = "/sound/volume"
+        const val VOLUME_SET: String = "/sound/volume"
 
-        const val PLAYLIST_REMOVE : String = "playlistRemove"
+        const val PLAYLIST_REMOVE: String = "playlistRemove"
 
     }
 
@@ -60,7 +60,7 @@ class ScreenInvaderAPI(val context : Context) {
             return
         }
 
-        mWebSocketClient = object : WebSocketClient(uri, Draft_10(), null, 1/1000000) {
+        mWebSocketClient = object : WebSocketClient(uri, Draft_10(), null, 1 / 1000000) {
             override fun onOpen(serverHandshake: ServerHandshake) {
                 Looper.prepare()
                 Log.i("Websocket", "Opened")
@@ -88,9 +88,9 @@ class ScreenInvaderAPI(val context : Context) {
     fun sendSICommandPublish(command: String, param: String) {
         val fullcommand = "[\"publish\", \"$command\",\"W\",\"$param\"]"
         try {
-            if (mWebSocketClient!!.getConnection() != null) {
+            if (mWebSocketClient!!.connection != null) {
                 mWebSocketClient!!.send(fullcommand)
-                Log.d("Sent:",fullcommand)
+                Log.d("Sent:", fullcommand)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -102,9 +102,9 @@ class ScreenInvaderAPI(val context : Context) {
         val fullcommand = "[\"publish\", \"$command\",\"W\" ]"
 
         try {
-            if (mWebSocketClient!!.getConnection() != null) {
+            if (mWebSocketClient!!.connection != null) {
                 mWebSocketClient!!.send(fullcommand)
-                Log.d("Sent:",fullcommand)
+                Log.d("Sent:", fullcommand)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -115,7 +115,7 @@ class ScreenInvaderAPI(val context : Context) {
     fun sendSICommandTrigger(command: String, param: String) {
         val fullcommand = "[\"trigger\", \"$command\",\"$param\"]"
         try {
-            if (mWebSocketClient!!.getConnection() != null) {
+            if (mWebSocketClient!!.connection != null) {
                 mWebSocketClient!!.send(fullcommand)
                 Log.d("Sent:", fullcommand)
             }
@@ -131,15 +131,34 @@ class ScreenInvaderAPI(val context : Context) {
 
         if (s.startsWith("{")) {
             val result = s.replace("\n".toRegex(), "")
-                getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.FULL_SYNC, result)
+            getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.FULL_SYNC, result)
         } else {
             try {
                 event = JSONArray(s)
                 val eventType = event.getString(0)
                 val eventParam = event.getString(2)
+                if (eventType.startsWith("/playlist/items/")) {
+                    val parts = eventType.split("/")
+                    if (parts.size > 3) {
+                        try {
+                            getOnScreenInvaderMessageListener().onScreenInvaderPlaylistUpdated(parts[2].substring(1).toInt(), parts[3], eventParam)
+                        } catch (e: NumberFormatException) {
+                            Log.e("Unknown Event Type: ", eventType)
+                        }
+                    }
+                }
                 when (eventType) {
                     "notifySend" -> {
                         getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_SEND, eventParam)
+                        Log.d("Got Notify:", eventParam)
+                    }
+                    "notifyLong" -> {
+                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_SEND, eventParam) //TODO: implement other uses
+                        Log.d("Got Notify:", eventParam)
+                    }
+                    "notifyException" -> {
+                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_SEND, eventParam) //TODO: implement other uses
+                        Log.d("Got Notify:", eventParam)
                     }
                     "playerTimePos" -> {
                         getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYER_TIME_POS, eventParam)
@@ -175,12 +194,13 @@ class ScreenInvaderAPI(val context : Context) {
     }
 
     interface OnScreenInvaderMessageListener {
-        fun onScreenInvaderMessage(message : Message, data: String)
+        fun onScreenInvaderMessage(message: Message, data: String)
+        fun onScreenInvaderPlaylistUpdated(item: Int, dataType: String, value: String)
         fun onWebsocketError(exception: Exception)
         fun onWebsocketOpened()
     }
 
-    fun getOnScreenInvaderMessageListener() : OnScreenInvaderMessageListener {
+    fun getOnScreenInvaderMessageListener(): OnScreenInvaderMessageListener {
         return context as ScreenInvaderActivtiy
     }
 }

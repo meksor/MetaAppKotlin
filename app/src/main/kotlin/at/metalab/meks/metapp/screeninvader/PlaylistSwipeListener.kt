@@ -22,8 +22,8 @@ open class PlaylistSwipeListener(ctx: Context) : View.OnTouchListener {
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
 
-        private val SWIPE_THRESHOLD = 100
-        private val SWIPE_VELOCITY_THRESHOLD = 100
+        private val SWIPE_THRESHOLD = 70
+        private val SWIPE_VELOCITY_THRESHOLD = 70
 
         override fun onDown(e: MotionEvent): Boolean {
             return true

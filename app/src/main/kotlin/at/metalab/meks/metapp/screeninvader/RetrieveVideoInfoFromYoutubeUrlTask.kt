@@ -37,7 +37,7 @@ class RetrieveVideoInfoFromYoutubeUrlTask(val delegate: AsyncResponse): AsyncTas
     }
 
     override fun onPostExecute(result: YoutubeVideoObject){
-        delegate.processFinish(result)
+        if (result.items.size > 0) delegate.processFinish(result)
     }
 
     fun getQueryMap(query: String): Map<String, String> {

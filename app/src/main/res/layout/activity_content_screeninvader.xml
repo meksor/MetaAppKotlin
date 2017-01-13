@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/playerbar_more_layout"
         android:orientation="vertical"
-e        android:background="@color/md_grey_50"
+        android:background="@color/md_grey_50"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="218dp"
@@ -128,6 +128,7 @@ e        android:background="@color/md_grey_50"
             android:layout_width="match_parent"
             android:layout_height="72dp"/>
     </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:layout_marginTop="56dp"
         android:layout_marginBottom="72dp"
