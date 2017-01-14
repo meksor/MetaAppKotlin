@@ -24,6 +24,7 @@ import at.metalab.meks.metapp.screeninvader.pojo.screeninvader.ScreeninvaderObje
 import at.metalab.meks.metapp.screeninvader.fragments.PlayerBarBaseFragment
 import at.metalab.meks.metapp.screeninvader.fragments.PlayerBarButtonsFragment
 import at.metalab.meks.metapp.screeninvader.fragments.PlayerBarClearPlaylistFragment
+import at.metalab.meks.metapp.screeninvader.pojo.screeninvader.Item
 import com.androidadvance.topsnackbar.TSnackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -246,15 +247,28 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
                     mPlaylistAdapter.notifyDataSetChanged()
                 })
             }
+            ScreenInvaderAPI.Message.PLAYLIST_ITEM_REMOVED -> {
+                mScreenInvaderObject.playlist.items.removeAt(data.toInt())
+                runOnUiThread {
+                    mPlaylistAdapter.notifyDataSetChanged()
+                }
+            }
         }
     }
 
     override fun onScreenInvaderPlaylistUpdated(item: Int, dataType: String, value: String) {
-        val realPos = mScreenInvaderObject.playlist.items.size - item
-        val field = mScreenInvaderObject.playlist.items[realPos].javaClass.getDeclaredField(dataType)
-        field.isAccessible = true
-        field.set(mScreenInvaderObject.playlist.items[realPos], value)
-        mPlaylistAdapter.notifyDataSetChanged()
+        try {
+            val field = mScreenInvaderObject.playlist.items[item].javaClass.getDeclaredField(dataType)
+            Log.d("Property DataType:", dataType)
+            field.isAccessible = true
+            field.set(mScreenInvaderObject.playlist.items[item], value)
+
+        } catch (e : IndexOutOfBoundsException) {
+            mScreenInvaderObject.playlist.items.add(Item())
+        }
+        runOnUiThread {
+            mPlaylistAdapter.notifyDataSetChanged()
+        }
     }
 
 

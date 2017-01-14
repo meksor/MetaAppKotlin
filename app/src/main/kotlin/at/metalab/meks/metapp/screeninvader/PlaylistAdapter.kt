@@ -45,6 +45,8 @@ class PlaylistAdapter(val context : Context, var mSreeninvaderObject : Screeninv
     override fun onBindViewHolder(holder: PlaylistAdapter.ViewHolder?, position: Int) {
         val reverseList = mSreeninvaderObject.playlist.items.reversed()
         val item = reverseList[position]
+
+        if (item.category == null) {return}
         holder!!.mTitleView.text = item.title
 
         if (item.source.startsWith("https://www.youtube.com/")) {

@@ -139,46 +139,53 @@ class ScreenInvaderAPI(val context: Context) {
                 val eventParam = event.getString(2)
                 if (eventType.startsWith("/playlist/items/")) {
                     val parts = eventType.split("/")
-                    if (parts.size > 3) {
+                    if (parts.size > 4 && parts[4] != "." && eventParam != "") {
                         try {
-                            getOnScreenInvaderMessageListener().onScreenInvaderPlaylistUpdated(parts[2].substring(1).toInt(), parts[3], eventParam)
+                            getOnScreenInvaderMessageListener().onScreenInvaderPlaylistUpdated(parts[3].substring(1).toInt(), parts[4], eventParam)
                         } catch (e: NumberFormatException) {
                             Log.e("Unknown Event Type: ", eventType)
+                            e.printStackTrace()
                         }
                     }
+                } else {
+                    when (eventType) {
+                        "notifySend" -> {
+                            getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_SEND, eventParam)
+                            Log.d("Got Notify:", eventParam)
+                        }
+                        "notifyLong" -> {
+                            getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_LONG, eventParam)
+                            Log.d("Got Notify:", eventParam)
+                        }
+                        "notifyException" -> {
+                            getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_EXCEPTION, eventParam)
+                            Log.d("Got Notify:", eventParam)
+                        }
+                        "playerTimePos" -> {
+                            getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYER_TIME_POS, eventParam)
+                        }
+                        "playlistRemove" -> {
+                            getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYLIST_ITEM_REMOVED, eventParam)
+                        }
+                        "/player/paused" -> {
+                            getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYER_PAUSE_STATUS, eventParam)
+                        }
+                        "/shairport/active" -> {
+                            getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.SHAIRPORT_ACTIVE_STATUS, eventParam)
+                        }
+                        "/sound/volume" -> {
+                            getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.VOLUME_CHANGED, eventParam)
+                        }
+                        "/playlist/index" -> {
+                            getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYLIST_INDEX_CHANGED, eventParam)
+                        }
+                        else -> Log.e("Unknown Event Type: ", eventType)
+                    }
                 }
-                when (eventType) {
-                    "notifySend" -> {
-                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_SEND, eventParam)
-                        Log.d("Got Notify:", eventParam)
-                    }
-                    "notifyLong" -> {
-                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_LONG, eventParam)
-                        Log.d("Got Notify:", eventParam)
-                    }
-                    "notifyException" -> {
-                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.NOTIFY_EXCEPTION, eventParam)
-                        Log.d("Got Notify:", eventParam)
-                    }
-                    "playerTimePos" -> {
-                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYER_TIME_POS, eventParam)
-                    }
-                    "/player/paused" -> {
-                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYER_PAUSE_STATUS, eventParam)
-                    }
-                    "/shairport/active" -> {
-                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.SHAIRPORT_ACTIVE_STATUS, eventParam)
-                    }
-                    "/sound/volume" -> {
-                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.VOLUME_CHANGED, eventParam)
-                    }
-                    "/playlist/index" -> {
-                        getOnScreenInvaderMessageListener().onScreenInvaderMessage(Message.PLAYLIST_INDEX_CHANGED, eventParam)
-                    }
-                    else -> Log.e("Unknown Event Type: ", eventType)
-                }
+
             } catch (e: Exception) {
                 e.printStackTrace()
+                //:P
             }
         }
     }
@@ -192,7 +199,9 @@ class ScreenInvaderAPI(val context: Context) {
         PLAYER_PAUSE_STATUS,
         SHAIRPORT_ACTIVE_STATUS,
         VOLUME_CHANGED,
-        PLAYLIST_INDEX_CHANGED
+        PLAYLIST_INDEX_CHANGED,
+        PLAYLIST_SIZE_CHANGED,
+        PLAYLIST_ITEM_REMOVED
     }
 
     interface OnScreenInvaderMessageListener {
