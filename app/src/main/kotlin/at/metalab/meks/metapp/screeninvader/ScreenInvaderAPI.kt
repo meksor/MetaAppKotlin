@@ -3,6 +3,7 @@ package at.metalab.meks.metapp.screeninvader
 import android.content.Context
 import android.os.Looper
 import android.util.Log
+import org.java_websocket.WebSocket
 
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.drafts.Draft_10
@@ -46,6 +47,8 @@ class ScreenInvaderAPI(val context: Context) {
 
         const val PLAYLIST_REMOVE: String = "playlistRemove"
 
+        const val PLAYLIST_LOAD: String = "showUrl"
+
     }
 
     private var mWebSocketClient: WebSocketClient? = null
@@ -65,7 +68,7 @@ class ScreenInvaderAPI(val context: Context) {
                 Looper.prepare()
                 Log.i("Websocket", "Opened")
                 getOnScreenInvaderMessageListener().onWebsocketOpened()
-                mWebSocketClient!!.send("setup")
+                if (context is ScreenInvaderActivtiy) mWebSocketClient!!.send("setup") //If API is being started from ScreenInvaderActivtiy, send setup to get intial Screeninvader Object
             }
 
             override fun onMessage(s: String) {
@@ -212,6 +215,10 @@ class ScreenInvaderAPI(val context: Context) {
     }
 
     fun getOnScreenInvaderMessageListener(): OnScreenInvaderMessageListener {
-        return context as ScreenInvaderActivtiy
+        if (context is ScreenInvaderActivtiy || context is InvadeShareMenu) {
+            return context as OnScreenInvaderMessageListener
+        } else {
+            throw(UnsupportedOperationException())
+        }
     }
 }

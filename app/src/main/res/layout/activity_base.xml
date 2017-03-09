@@ -45,6 +45,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        app:itemTextColor="@color/white"
+        android:background="@color/meta_duenkelerblau"
         app:headerLayout="@layout/header_nav_activity_base"
-        app:menu="@menu/menu_activity_base_drawer"/>
+        app:menu="@menu/menu_activity_base_drawer"
+        app:theme="@style/Base.Widget.AppCompat.DrawerArrowToggle.Common"/>
 </android.support.v4.widget.DrawerLayout>

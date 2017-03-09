@@ -21,5 +21,8 @@
     
     <string name="button_label_try_agein">Try Again</string>
 
+    <string name="no_wifi_toast">Not Connected</string>
+
+
 
 </resources>
