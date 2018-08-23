@@ -16,6 +16,13 @@
     <string name="title_github">Github</string>
     <string name="title_share">Share</string>
 
+    <string name="confirm_clear_playlist">Clear Playlist?</string>
+    <string name="button_label_confirm_clear_playlist">Clear</string>
+    
+    <string name="button_label_try_agein">Try Again</string>
+
+    <string name="no_wifi_toast">Not Connected</string>
+
 
 
 </resources>

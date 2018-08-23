@@ -5,7 +5,7 @@
         <item
             android:id="@+id/nav_screeninvader"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/title_screeninvader"/>
+            android:title="@string/title_screeninvader" />
         <item
             android:id="@+id/nav_control"
             android:icon="@drawable/ic_menu_gallery"
