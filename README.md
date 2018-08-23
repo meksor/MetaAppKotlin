@@ -10,5 +10,6 @@ The MetaApp rewritten once again (in kotlin)
  - Isolate Screeninvader API to own Component
  - Implement remaining features o the Screeninvader API (Buttons etc. alredy exist)
  - ~~Implement Share Menu intent (Youtube App, etc)~~
+ - ~~Rebuild App to use Fragments~~
  - Implement Search?
  
