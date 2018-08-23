@@ -50,7 +50,7 @@ class ScreenInvaderFragment : BaseFragment(),
 
     override val actionBarTitle = R.string.title_screeninvader
 
-    private val mScreenInvaderAPI: ScreenInvaderAPI = ScreenInvaderAPI(context)
+    private lateinit var mScreenInvaderAPI: ScreenInvaderAPI
     private lateinit var mScreenInvaderObject: ScreeninvaderObject
     private var mLastVolume = "20"
 
@@ -138,6 +138,7 @@ class ScreenInvaderFragment : BaseFragment(),
             }
         })
         onWebsocketConnectionStatusChanged(false)
+        mScreenInvaderAPI = ScreenInvaderAPI(context, this)
         mScreenInvaderAPI.connectWebSocket()
         showFragment(PlayerBarBaseFragment.FragmentType.BUTTONS)
         //onScreenInvaderMessage(ScreenInvaderAPI.Message.FULL_SYNC, MOCK_SCREENINVADER_JSON)
@@ -394,7 +395,7 @@ class ScreenInvaderFragment : BaseFragment(),
             PlayerBarBaseFragment.FragmentType.CLEAR -> mCurrentPlayerbarFragment = PlayerBarClearPlaylistFragment()
             PlayerBarBaseFragment.FragmentType.BROWSER -> TODO()
         }
-        val transaction: FragmentTransaction = fragmentManager.beginTransaction()
+        val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
         transaction.replace(R.id.playerbar_fragment_container, mCurrentPlayerbarFragment)
         transaction.commitAllowingStateLoss()
     }

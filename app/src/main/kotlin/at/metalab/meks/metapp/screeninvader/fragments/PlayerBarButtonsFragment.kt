@@ -35,11 +35,11 @@ class PlayerBarButtonsFragment() : PlayerBarBaseFragment() {
         Buttons.mShairplayButton = view!!.find(R.id.playerbar_button_airplay)
         Buttons.mClearButton = view!!.find(R.id.playerbar_button_clear_playlist)
 
-        Buttons.mReplayButton.setOnClickListener(activity as ScreenInvaderFragment)
-        Buttons.mTorrentButton.setOnClickListener(activity as ScreenInvaderFragment)
-        Buttons.mBrowserButton.setOnClickListener(activity as ScreenInvaderFragment)
-        Buttons.mShairplayButton.setOnClickListener(activity as ScreenInvaderFragment)
-        Buttons.mClearButton.setOnClickListener(activity as ScreenInvaderFragment)
+        Buttons.mReplayButton.setOnClickListener(parentFragment as ScreenInvaderFragment)
+        Buttons.mTorrentButton.setOnClickListener(parentFragment as ScreenInvaderFragment)
+        Buttons.mBrowserButton.setOnClickListener(parentFragment as ScreenInvaderFragment)
+        Buttons.mShairplayButton.setOnClickListener(parentFragment as ScreenInvaderFragment)
+        Buttons.mClearButton.setOnClickListener(parentFragment as ScreenInvaderFragment)
     }
 
     override fun onFragmentViewUpdated(type: ScreenInvaderFragment.UiComponent, enabled : Boolean) {

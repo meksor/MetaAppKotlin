@@ -63,14 +63,14 @@
                 <TextView
                     android:id="@+id/playlist_row_title"
                     android:textColor="@color/black_alpha_87"
-                    android:text="The funniest Video you will ever see!"
+                    android:text="The funniest Video you will ever see! Unterlänge!"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"/>
 
                  <TextView
                      android:id="@+id/playlist_row_description"
                      android:textColor="@color/black_alpha_54"
-                    android:text="The funniest Description you will ever read!"
+                    android:text="The funniest Description you will ever read! Unterlänge!"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"/>
             </LinearLayout>

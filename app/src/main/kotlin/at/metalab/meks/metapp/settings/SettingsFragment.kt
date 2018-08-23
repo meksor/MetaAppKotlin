@@ -1,9 +1,9 @@
 package at.metalab.meks.metapp.settings
 
-import at.metalab.meks.metapp.MainActivity
+import android.support.v4.app.Fragment
 
 /**
  * Created by meks on 01.09.2016.
  */
-class SettingsActivity : MainActivity() {
+class SettingsFragment : Fragment() {
 }

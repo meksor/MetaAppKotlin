@@ -23,8 +23,8 @@
         </activity>
 
         <activity
-            android:name=".screeninvader.ScreenInvaderActivtiy"
-            android:label="@string/title_screeninvader">
+            android:name=".MainActivity"
+            android:label="@string/app_name">
         </activity>
 
         <activity
@@ -37,20 +37,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".control.ControlActivtiy"
-            android:label="@string/title_control">
-        </activity>
-
-        <activity
-            android:name=".issues.IssuesActivity"
-            android:label="@string/title_issues">
-        </activity>
-
-        <activity
-            android:name=".settings.SettingsActivity"
-            android:label="@string/title_settings">
-        </activity>
 
     </application>
 

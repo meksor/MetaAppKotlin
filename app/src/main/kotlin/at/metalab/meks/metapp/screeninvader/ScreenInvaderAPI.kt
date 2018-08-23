@@ -1,6 +1,7 @@
 package at.metalab.meks.metapp.screeninvader
 
 import android.content.Context
+import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import at.metalab.meks.metapp.MainActivity
@@ -18,7 +19,7 @@ import java.net.URISyntaxException
  * Created by meks on 21.07.2016.
  */
 
-class ScreenInvaderAPI(val context: Context) {
+class ScreenInvaderAPI(val context: Context, val msgListener: OnScreenInvaderMessageListener) {
 
     object COMMANDS {
 
@@ -217,7 +218,7 @@ class ScreenInvaderAPI(val context: Context) {
 
     fun getOnScreenInvaderMessageListener(): OnScreenInvaderMessageListener {
         if (context is MainActivity || context is InvadeShareMenu) {
-            return context as OnScreenInvaderMessageListener
+            return msgListener
         } else {
             throw(UnsupportedOperationException())
         }

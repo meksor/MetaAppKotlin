@@ -28,8 +28,8 @@ class PlayerBarClearPlaylistFragment() : PlayerBarBaseFragment() {
         mConfirmClearButton = view!!.find(R.id.playerbar_button_confirm_clear_playlist)
         mCancelClearButton = view!!.find(R.id.playerbar_button_cancel_clear_playlist)
 
-        mConfirmClearButton.setOnClickListener(context as ScreenInvaderFragment)
-        mCancelClearButton.setOnClickListener(context as ScreenInvaderFragment)
+        mConfirmClearButton.setOnClickListener(parentFragment as ScreenInvaderFragment)
+        mCancelClearButton.setOnClickListener(parentFragment as ScreenInvaderFragment)
     }
 
     override fun getType(): FragmentType {

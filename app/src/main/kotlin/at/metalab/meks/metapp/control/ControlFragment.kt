@@ -1,9 +1,9 @@
 package at.metalab.meks.metapp.control
 
-import at.metalab.meks.metapp.MainActivity
+import android.support.v4.app.Fragment
 
 /**
  * Created by meks on 01.09.2016.
  */
-class ControlActivtiy : MainActivity() {
+class ControlFragment : Fragment() {
 }

@@ -22,13 +22,12 @@ class InvadeShareMenu : Activity(), ScreenInvaderAPI.OnScreenInvaderMessageListe
         super.onCreate(savedInstanceState)
 
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.getNetworkInfo(
-                ConnectivityManager.TYPE_WIFI)
-        if (networkInfo.isConnected()) {
+        val networkInfo = connectivityManager.activeNetworkInfo
+        if (networkInfo != null && networkInfo.type == ConnectivityManager.TYPE_WIFI) {
             //TODO: Check if we know a ScreenInvader on this network
             val intent = intent
             val type = intent.type
-            mScreeninvaderApi = ScreenInvaderAPI(this)
+            mScreeninvaderApi = ScreenInvaderAPI(this, this)
 
             if (type.startsWith("text/")) {
                 val text = intent.getStringExtra(Intent.EXTRA_TEXT)
