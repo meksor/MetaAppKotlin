@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import at.metalab.meks.metapp.MainActivity
 import at.metalab.meks.metapp.R
-import at.metalab.meks.metapp.screeninvader.ScreenInvaderActivtiy
+import at.metalab.meks.metapp.screeninvader.ScreenInvaderFragment
 import org.jetbrains.anko.find
 
 /**
@@ -24,17 +25,17 @@ class PlayerBarClearPlaylistFragment() : PlayerBarBaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mConfirmClearButton = find(R.id.playerbar_button_confirm_clear_playlist)
-        mCancelClearButton = find(R.id.playerbar_button_cancel_clear_playlist)
+        mConfirmClearButton = view!!.find(R.id.playerbar_button_confirm_clear_playlist)
+        mCancelClearButton = view!!.find(R.id.playerbar_button_cancel_clear_playlist)
 
-        mConfirmClearButton.setOnClickListener(activity as ScreenInvaderActivtiy)
-        mCancelClearButton.setOnClickListener(activity as ScreenInvaderActivtiy)
+        mConfirmClearButton.setOnClickListener(context as ScreenInvaderFragment)
+        mCancelClearButton.setOnClickListener(context as ScreenInvaderFragment)
     }
 
     override fun getType(): FragmentType {
         return FragmentType.CLEAR
     }
 
-    override fun onFragmentViewUpdated(type: ScreenInvaderActivtiy.UiComponent, enabled: Boolean) {
+    override fun onFragmentViewUpdated(type: ScreenInvaderFragment.UiComponent, enabled: Boolean) {
     }
 }

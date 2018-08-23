@@ -1,16 +1,15 @@
 package at.metalab.meks.metapp.screeninvader.fragments
 
-import android.app.Fragment
 import android.graphics.Point
+import android.support.v4.app.Fragment
 import android.view.View
 import android.view.ViewAnimationUtils
-import at.metalab.meks.metapp.pxFromDp
-import at.metalab.meks.metapp.screeninvader.ScreenInvaderActivtiy
+import at.metalab.meks.metapp.screeninvader.ScreenInvaderFragment
 
 /**
  * Created by meks on 03.09.2016.
  */
-abstract class PlayerBarBaseFragment : Fragment() , ScreenInvaderActivtiy.FragmentViewUpdateListener {
+abstract class PlayerBarBaseFragment : Fragment() , ScreenInvaderFragment.FragmentViewUpdateListener {
 
     enum class FragmentType {
         BUTTONS,
@@ -20,7 +19,7 @@ abstract class PlayerBarBaseFragment : Fragment() , ScreenInvaderActivtiy.Fragme
 
     abstract fun getType() : FragmentType
 
-    override abstract fun onFragmentViewUpdated(type: ScreenInvaderActivtiy.UiComponent, enabled : Boolean)
+    override abstract fun onFragmentViewUpdated(type: ScreenInvaderFragment.UiComponent, enabled : Boolean)
 
     open fun setRevealAnimation(view : View) {
         view.visibility = View.INVISIBLE

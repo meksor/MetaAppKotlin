@@ -1,11 +1,12 @@
 package at.metalab.meks.metapp.screeninvader
 
-import android.app.FragmentTransaction
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -17,7 +18,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import at.metalab.meks.metapp.BaseDrawerActivity
+import at.metalab.meks.metapp.BaseFragment
+import at.metalab.meks.metapp.MainActivity
 import at.metalab.meks.metapp.R
 import at.metalab.meks.metapp.convertDpToPixel
 import at.metalab.meks.metapp.screeninvader.pojo.screeninvader.ScreeninvaderObject
@@ -28,7 +30,7 @@ import at.metalab.meks.metapp.screeninvader.pojo.screeninvader.Item
 import com.androidadvance.topsnackbar.TSnackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.header_nav_activity_base.view.*
+import kotlinx.android.synthetic.main.header_nav_activity_main.view.*
 import org.java_websocket.exceptions.WebsocketNotConnectedException
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.margin
@@ -42,11 +44,13 @@ import java.util.*
  * Created by meks on 01.09.2016.
  */
 
-class ScreenInvaderActivtiy : BaseDrawerActivity(),
+class ScreenInvaderFragment : BaseFragment(),
         View.OnClickListener,
         ScreenInvaderAPI.OnScreenInvaderMessageListener {
 
-    private val mScreenInvaderAPI: ScreenInvaderAPI = ScreenInvaderAPI(this)
+    override val actionBarTitle = R.string.title_screeninvader
+
+    private val mScreenInvaderAPI: ScreenInvaderAPI = ScreenInvaderAPI(context)
     private lateinit var mScreenInvaderObject: ScreeninvaderObject
     private var mLastVolume = "20"
 
@@ -71,18 +75,20 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
     var mMoreExpanded: Boolean = false
     var mSyncedWithScreenInvader = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val activityView = inflater.inflate(R.layout.activity_content_screeninvader, mRootLayout, false)
-        mRootLayout.addView(activityView)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View? {
+        val view = inflater.inflate(R.layout.activity_content_screeninvader, container, false)
+        return view
+    }
 
-        mPlayerBarMoreLayout = findViewById(R.id.playerbar_more_layout) as LinearLayout
-        mProgressBar = findViewById(R.id.playerbar_progressbar) as ProgressBar
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-        mPlaylistRecyclerView = findViewById(R.id.screeninvader_recyclerview) as RecyclerView
-        val layoutManager = LinearLayoutManager(this)
+        mPlayerBarMoreLayout = view!!.findViewById(R.id.playerbar_more_layout) as LinearLayout
+        mProgressBar = view!!.findViewById(R.id.playerbar_progressbar) as ProgressBar
+
+        mPlaylistRecyclerView = view!!.findViewById(R.id.screeninvader_recyclerview) as RecyclerView
+        val layoutManager = LinearLayoutManager(context)
         mPlaylistRecyclerView.layoutManager = layoutManager
 
         mPlaylistRecyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -98,14 +104,14 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
             }
         }
 
-        Buttons.mPlayButton = findViewById(R.id.playerbar_button_play) as ImageButton
-        Buttons.mMoreButton = findViewById(R.id.playerbar_button_more) as ImageButton
-        Buttons.mMuteButton = findViewById(R.id.playerbar_button_mute) as ImageButton
-        Buttons.mPreviousButton = findViewById(R.id.playerbar_button_previous) as ImageButton
-        Buttons.mNextButton = findViewById(R.id.playerbar_button_next) as ImageButton
-        Buttons.mShuffleButton = findViewById(R.id.playerbar_button_shuffle) as ImageButton
+        Buttons.mPlayButton = view!!.findViewById(R.id.playerbar_button_play) as ImageButton
+        Buttons.mMoreButton = view!!.findViewById(R.id.playerbar_button_more) as ImageButton
+        Buttons.mMuteButton = view!!.findViewById(R.id.playerbar_button_mute) as ImageButton
+        Buttons.mPreviousButton = view!!.findViewById(R.id.playerbar_button_previous) as ImageButton
+        Buttons.mNextButton = view!!.findViewById(R.id.playerbar_button_next) as ImageButton
+        Buttons.mShuffleButton = view!!.findViewById(R.id.playerbar_button_shuffle) as ImageButton
 
-        findViewById(R.id.screeninvader_error_retry_button).setOnClickListener(this)
+        view!!.findViewById(R.id.screeninvader_error_retry_button).setOnClickListener(this)
         Buttons.mMoreButton.setOnClickListener(this)
         Buttons.mMuteButton.setOnClickListener(this)
         Buttons.mPlayButton.setOnClickListener(this)
@@ -113,7 +119,7 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
         Buttons.mNextButton.setOnClickListener(this)
         Buttons.mShuffleButton.setOnClickListener(this)
 
-        mVolumeBar = findViewById(R.id.playerbar_volume_seekbar) as SeekBar
+        mVolumeBar = view!!.findViewById(R.id.playerbar_volume_seekbar) as SeekBar
 
         mVolumeBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStopTrackingTouch(p0: SeekBar?) {
@@ -190,8 +196,8 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
                 showFragment(PlayerBarBaseFragment.FragmentType.BUTTONS)
             }
             R.id.screeninvader_error_retry_button -> {
-                findViewById(R.id.screeninvader_error_view).visibility = View.INVISIBLE
-                findViewById(R.id.screeninvader_connection_progressbar).visibility = View.VISIBLE
+                view!!.findViewById(R.id.screeninvader_error_view).visibility = View.INVISIBLE
+                view!!.findViewById(R.id.screeninvader_connection_progressbar).visibility = View.VISIBLE
                 mScreenInvaderAPI.connectWebSocket()
             }
         }
@@ -205,13 +211,17 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
         }
         when (message) {
             ScreenInvaderAPI.Message.NOTIFY_SEND -> {
-                makeTopSnackbar(getColor(R.color.meta_kontrast), data, TSnackbar.LENGTH_SHORT)
+                makeTopSnackbar(ContextCompat.getColor(context, R.color.meta_kontrast),
+                        data, TSnackbar.LENGTH_SHORT)
             }
             ScreenInvaderAPI.Message.NOTIFY_LONG -> {
-                makeTopSnackbar(getColor(R.color.meta_kontrast), data, TSnackbar.LENGTH_LONG)
+                makeTopSnackbar(ContextCompat.getColor(context, R.color.meta_kontrast),
+                        data, TSnackbar.LENGTH_LONG)
             }
             ScreenInvaderAPI.Message.NOTIFY_EXCEPTION -> {
-                makeTopSnackbar(getColor(R.color.meta_orange), data, TSnackbar.LENGTH_LONG)
+                makeTopSnackbar(
+                        ContextCompat.getColor(context, R.color.meta_orange),
+                        data, TSnackbar.LENGTH_LONG)
             }
             ScreenInvaderAPI.Message.PLAYER_TIME_POS -> {
                 val playerTimePos = parseSimpleGson<ArrayList <String>>(data)
@@ -221,7 +231,7 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
                     val totalTime = sdf.parse(playerTimePos[1].replace("\\", ""))
                     val percentage = getPercentageLeft(currentTime, totalTime)
 
-                    this@ScreenInvaderActivtiy.runOnUiThread({
+                    this@ScreenInvaderFragment.activity.runOnUiThread({
                         mProgressBar.isIndeterminate = false
                         mProgressBar.progress = (100 - percentage)
                     })
@@ -242,14 +252,14 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
                 mVolumeBar.progress = data.replace(" ", "").toInt()
             }
             ScreenInvaderAPI.Message.PLAYLIST_INDEX_CHANGED -> {
-                this@ScreenInvaderActivtiy.runOnUiThread({
+                this@ScreenInvaderFragment.activity.runOnUiThread({
                     mScreenInvaderObject.playlist.index = data
                     mPlaylistAdapter.notifyDataSetChanged()
                 })
             }
             ScreenInvaderAPI.Message.PLAYLIST_ITEM_REMOVED -> {
                 mScreenInvaderObject.playlist.items.removeAt(data.toInt())
-                runOnUiThread {
+                activity.runOnUiThread {
                     mPlaylistAdapter.notifyDataSetChanged()
                 }
             }
@@ -266,7 +276,7 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
         } catch (e : IndexOutOfBoundsException) {
             mScreenInvaderObject.playlist.items.add(Item())
         }
-        runOnUiThread {
+        activity.runOnUiThread {
             mPlaylistAdapter.notifyDataSetChanged()
         }
     }
@@ -294,27 +304,27 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
     }
 
     private fun updateUiComponent(component: UiComponent) {
-        this@ScreenInvaderActivtiy.runOnUiThread({
+        this@ScreenInvaderFragment.activity.runOnUiThread({
             when (component) {
                 UiComponent.BUTTON_PLAY -> {
                     if (mScreenInvaderObject.player.paused == "true") {
-                        Buttons.mPlayButton.setImageDrawable(getDrawable(R.drawable.ic_play_playerbar))
+                        Buttons.mPlayButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_play_playerbar))
                     } else {
-                        Buttons.mPlayButton.setImageDrawable(getDrawable(R.drawable.ic_pause_playerbar))
+                        Buttons.mPlayButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pause_playerbar))
                     }
                 }
                 UiComponent.BUTTON_MUTE -> {
                     if (mScreenInvaderObject.sound.volume.replace(" ", "").toInt() > 0) {
-                        Buttons.mMuteButton.setImageDrawable(getDrawable(R.drawable.ic_volume_playerbar))
+                        Buttons.mMuteButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_volume_playerbar))
                     } else {
-                        Buttons.mMuteButton.setImageDrawable(getDrawable(R.drawable.ic_mute_playerbar))
+                        Buttons.mMuteButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_mute_playerbar))
                     }
                 }
                 UiComponent.VOLUME_BAR -> {
                     mVolumeBar.progress = mScreenInvaderObject.sound.volume.toInt()
                 }
                 UiComponent.PLAYLIST_VIEW -> {
-                    mPlaylistAdapter = PlaylistAdapter(this, mScreenInvaderObject, mScreenInvaderAPI)
+                    mPlaylistAdapter = PlaylistAdapter(this.activity, mScreenInvaderObject, mScreenInvaderAPI)
                     mPlaylistRecyclerView.adapter = mPlaylistAdapter
                 }
                 else -> {
@@ -329,21 +339,21 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
 
     override fun onWebsocketError(exception: Exception) {
         exception.printStackTrace()
-        this@ScreenInvaderActivtiy.runOnUiThread({
+        this@ScreenInvaderFragment.activity.runOnUiThread({
             if (exception is ConnectException) {
-                findViewById(R.id.screeninvader_connection_progressbar).visibility = View.INVISIBLE
-                (findViewById(R.id.screeninvader_error_message_textview) as TextView).text = exception.message
-                findViewById(R.id.screeninvader_error_view).visibility = View.VISIBLE
+                view!!.findViewById(R.id.screeninvader_connection_progressbar).visibility = View.INVISIBLE
+                (view!!.findViewById(R.id.screeninvader_error_message_textview) as TextView).text = exception.message
+                view!!.findViewById(R.id.screeninvader_error_view).visibility = View.VISIBLE
             } else if (exception is WebsocketNotConnectedException) {
-                findViewById(R.id.screeninvader_connection_progressbar).visibility = View.INVISIBLE
-                (findViewById(R.id.screeninvader_error_message_textview) as TextView).text = exception.message
-                findViewById(R.id.screeninvader_error_view).visibility = View.VISIBLE
+                view!!.findViewById(R.id.screeninvader_connection_progressbar).visibility = View.INVISIBLE
+                (view!!.findViewById(R.id.screeninvader_error_message_textview) as TextView).text = exception.message
+                view!!.findViewById(R.id.screeninvader_error_view).visibility = View.VISIBLE
             }
         })
     }
 
     private fun makeTopSnackbar(backgroundColor : Int, text : String, length : Int) {
-        val snackbar = TSnackbar.make(findViewById(R.id.activity_content_screeninvader_root), text, length)
+        val snackbar = TSnackbar.make(view!!.findViewById(R.id.activity_content_screeninvader_root), text, length)
         snackbar.view.elevation = convertDpToPixel(3f) //Snackbar needs to be behind Toolbar
 
         val params = snackbar.view.layoutParams as CoordinatorLayout.LayoutParams
@@ -390,7 +400,7 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
     }
 
     private fun onWebsocketConnectionStatusChanged(opened: Boolean) {
-        this@ScreenInvaderActivtiy.runOnUiThread({
+        this@ScreenInvaderFragment.activity.runOnUiThread({
             Buttons.mShuffleButton.isEnabled = opened
             Buttons.mMoreButton.isEnabled = opened
             Buttons.mPlayButton.isEnabled = opened
@@ -401,11 +411,11 @@ class ScreenInvaderActivtiy : BaseDrawerActivity(),
             Buttons.mMoreButton.alpha = if (opened) 1f else 0.54f
             Buttons.mNextButton.alpha = if (opened) 1f else 0.54f
             Buttons.mPreviousButton.alpha = if (opened) 1f else 0.54f
-            Buttons.mPlayButton.background = if (opened) getDrawable(R.drawable.background_circle_blue_ripple)
-            else getDrawable(R.drawable.background_circle_grey_ripple)
+            Buttons.mPlayButton.background = if (opened) ContextCompat.getDrawable(context, R.drawable.background_circle_blue_ripple)
+            else ContextCompat.getDrawable(context, R.drawable.background_circle_grey_ripple)
 
-            findViewById(R.id.screeninvader_connection_progressbar).visibility = if (opened) View.INVISIBLE
-            else View.VISIBLE
+            var progressBar : View = view!!.findViewById(R.id.screeninvader_connection_progressbar)
+            progressBar.visibility = if (opened) View.INVISIBLE else View.VISIBLE
         })
     }
 

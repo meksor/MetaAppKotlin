@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import at.metalab.meks.metapp.R
-import at.metalab.meks.metapp.screeninvader.ScreenInvaderActivtiy
+import at.metalab.meks.metapp.screeninvader.ScreenInvaderFragment
 import org.jetbrains.anko.find
 
 /**
@@ -29,29 +29,29 @@ class PlayerBarButtonsFragment() : PlayerBarBaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Buttons.mReplayButton = find(R.id.playerbar_button_replay)
-        Buttons.mTorrentButton = find(R.id.playerbar_button_torrents)
-        Buttons.mBrowserButton = find(R.id.playerbar_button_browser)
-        Buttons.mShairplayButton = find(R.id.playerbar_button_airplay)
-        Buttons.mClearButton = find(R.id.playerbar_button_clear_playlist)
+        Buttons.mReplayButton = view!!.find(R.id.playerbar_button_replay)
+        Buttons.mTorrentButton = view!!.find(R.id.playerbar_button_torrents)
+        Buttons.mBrowserButton = view!!.find(R.id.playerbar_button_browser)
+        Buttons.mShairplayButton = view!!.find(R.id.playerbar_button_airplay)
+        Buttons.mClearButton = view!!.find(R.id.playerbar_button_clear_playlist)
 
-        Buttons.mReplayButton.setOnClickListener(activity as ScreenInvaderActivtiy)
-        Buttons.mTorrentButton.setOnClickListener(activity as ScreenInvaderActivtiy)
-        Buttons.mBrowserButton.setOnClickListener(activity as ScreenInvaderActivtiy)
-        Buttons.mShairplayButton.setOnClickListener(activity as ScreenInvaderActivtiy)
-        Buttons.mClearButton.setOnClickListener(activity as ScreenInvaderActivtiy)
+        Buttons.mReplayButton.setOnClickListener(activity as ScreenInvaderFragment)
+        Buttons.mTorrentButton.setOnClickListener(activity as ScreenInvaderFragment)
+        Buttons.mBrowserButton.setOnClickListener(activity as ScreenInvaderFragment)
+        Buttons.mShairplayButton.setOnClickListener(activity as ScreenInvaderFragment)
+        Buttons.mClearButton.setOnClickListener(activity as ScreenInvaderFragment)
     }
 
-    override fun onFragmentViewUpdated(type: ScreenInvaderActivtiy.UiComponent, enabled : Boolean) {
+    override fun onFragmentViewUpdated(type: ScreenInvaderFragment.UiComponent, enabled : Boolean) {
         when (type) {
-            ScreenInvaderActivtiy.UiComponent.BUTTON_TORRENTS -> {
+            ScreenInvaderFragment.UiComponent.BUTTON_TORRENTS -> {
                 Buttons.mTorrentButton.background.setColorFilter(if (enabled) R.color.meta_orange else R.color.meta_dunkelblau, PorterDuff.Mode.SRC_ATOP)
             }
-            ScreenInvaderActivtiy.UiComponent.BUTTON_SHAIRPLAY -> {
+            ScreenInvaderFragment.UiComponent.BUTTON_SHAIRPLAY -> {
                 Buttons.mShairplayButton.background.setColorFilter(if (enabled) R.color.meta_orange else R.color.meta_dunkelblau, PorterDuff.Mode.SRC_ATOP)
             }
             else ->{
-                //TODO: Implement Other things
+                //TODO: Implement other buttons
             }
         }
     }

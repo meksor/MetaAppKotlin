@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context="at.metalab.meks.metapp.BaseDrawerActivity">
+        tools:context="at.metalab.meks.metapp.MainActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/activity_base_toolbar"
+                android:id="@+id/activity_main_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -33,21 +33,21 @@
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
-            android:id="@+id/activity_base_root"
+            android:id="@+id/activity_main_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/activity_base_drawer_view"
+        android:id="@+id/activity_main_drawer_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:itemTextColor="@color/white"
         android:background="@color/meta_duenkelerblau"
-        app:headerLayout="@layout/header_nav_activity_base"
-        app:menu="@menu/menu_activity_base_drawer"
+        app:headerLayout="@layout/header_nav_activity_main"
+        app:menu="@menu/menu_activity_main_drawer"
         app:theme="@style/Base.Widget.AppCompat.DrawerArrowToggle.Common"/>
 </android.support.v4.widget.DrawerLayout>
